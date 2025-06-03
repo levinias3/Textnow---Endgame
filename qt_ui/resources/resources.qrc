@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RCC>
+    <qresource prefix="/styles">
+        <file>style.qss</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="app_icon">../../icon.png</file>
+        <file alias="logo">../../assets/logo.png</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>../../fonts/SVN-Poppins-Regular.ttf</file>
+        <file>../../fonts/SVN-Poppins-Medium.ttf</file>
+        <file>../../fonts/SVN-Poppins-SemiBold.ttf</file>
+        <file>../../fonts/SVN-Poppins-Bold.ttf</file>
+    </qresource>
+</RCC> 

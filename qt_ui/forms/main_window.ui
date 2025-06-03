@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1440</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TextNow - Auto Text &amp; Image</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_main">
+    <property name="spacing">
+     <number>16</number>
+    </property>
+    <property name="leftMargin">
+     <number>16</number>
+    </property>
+    <property name="topMargin">
+     <number>16</number>
+    </property>
+    <property name="rightMargin">
+     <number>16</number>
+    </property>
+    <property name="bottomMargin">
+     <number>16</number>
+    </property>
+    
+    <!-- HEADER SECTION -->
+    <item>
+     <widget class="QWidget" name="headerWidget">
+      <property name="objectName">
+       <string>headerWidget</string>
+      </property>
+      <property name="maximumHeight">
+       <number>80</number>
+      </property>
+      <layout class="QHBoxLayout" name="headerLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       
+       <!-- Logo và text bên trái -->
+       <item>
+        <layout class="QHBoxLayout" name="leftHeaderLayout">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="logoIconLabel">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>🧸</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="styleSheet">
+            <string>font-size: 32px;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="logoTextLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="logoLabel">
+             <property name="objectName">
+              <string>logoLabel</string>
+             </property>
+             <property name="text">
+              <string>CHÀO BẠN, RẤT VUI VÌ BẠN ĐÃ TIN TƯƠNG VÀ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="logoSubLabel">
+             <property name="objectName">
+              <string>logoLabel</string>
+             </property>
+             <property name="text">
+              <string>SỬ DỤNG TEXTNOW</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       
+       <!-- Spacer để đẩy content sang phải -->
+       <item>
+        <spacer name="headerSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       
+       <!-- Info bên phải -->
+       <item>
+        <layout class="QVBoxLayout" name="rightHeaderLayout">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="countLabel">
+           <property name="objectName">
+            <string>countLabel</string>
+           </property>
+           <property name="text">
+            <string>SHORTCUT HIỆN CÓ: 8</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="statusLayout">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item>
+            <spacer name="statusSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="modeLabel">
+             <property name="objectName">
+              <string>modeLabel</string>
+             </property>
+             <property name="text">
+              <string>Chế độ: cân bằng</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="statusIndicator">
+             <property name="maximumSize">
+              <size>
+               <width>12</width>
+               <height>12</height>
+              </size>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>12</width>
+               <height>12</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string>background-color: #34B369; border-radius: 6px;</string>
+             </property>
+             <property name="text">
+              <string></string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="statusLabel">
+             <property name="objectName">
+              <string>statusLabel</string>
+             </property>
+             <property name="text">
+              <string>Đang theo dõi bàn phím</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    
+    <!-- MAIN CONTENT SECTION -->
+    <item>
+     <layout class="QHBoxLayout" name="mainContentLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      
+      <!-- SHORTCUT LIST PANEL (45%) -->
+      <item>
+       <widget class="QWidget" name="shortcutListCard">
+        <property name="objectName">
+         <string>shortcutListCard</string>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>45</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QVBoxLayout" name="shortcutListLayout">
+         <property name="spacing">
+          <number>16</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         
+         <!-- Title -->
+         <item>
+          <widget class="QLabel" name="shortcutListTitle">
+           <property name="objectName">
+            <string>shortcutListTitle</string>
+           </property>
+           <property name="text">
+            <string>DANH SÁCH SHORTCUT</string>
+           </property>
+          </widget>
+         </item>
+         
+         <!-- Search và Create button -->
+         <item>
+          <layout class="QHBoxLayout" name="searchCreateLayout">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item>
+            <widget class="QLineEdit" name="searchLineEdit">
+             <property name="objectName">
+              <string>searchLineEdit</string>
+             </property>
+             <property name="placeholderText">
+              <string>🔍 Nhập shortcut muốn tìm</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="createShortcutBtn">
+             <property name="objectName">
+              <string>createShortcutBtn</string>
+             </property>
+             <property name="text">
+              <string>Tạo Shortcut</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Table -->
+         <item>
+          <widget class="QTableView" name="shortcutTableView">
+           <property name="alternatingRowColors">
+            <bool>false</bool>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="horizontalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
+           <property name="verticalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
+           <property name="showGrid">
+            <bool>false</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      
+      <!-- IMAGE MANAGEMENT PANEL (25%) -->
+      <item>
+       <widget class="QWidget" name="imageManagerCard">
+        <property name="objectName">
+         <string>imageManagerCard</string>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>25</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QVBoxLayout" name="imageManagerLayout">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         
+         <!-- Header với icon và title -->
+         <item>
+          <layout class="QHBoxLayout" name="imageHeaderLayout">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="imageHeaderIcon">
+             <property name="text">
+              <string>🖼️</string>
+             </property>
+             <property name="styleSheet">
+              <string>font-size: 16px;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="imageHeaderTitle">
+             <property name="objectName">
+              <string>imageHeaderTitle</string>
+             </property>
+             <property name="text">
+              <string>QUẢN LÝ ẢNH</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="imageHeaderSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="imageCountLabel">
+             <property name="objectName">
+              <string>imageCountLabel</string>
+             </property>
+             <property name="text">
+              <string>📋 0 ảnh</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Info label -->
+         <item>
+          <widget class="QLabel" name="imageInfoLabel">
+           <property name="text">
+            <string>Thứ tự từ 1-20, tối đa 20 ảnh • Hỗ trợ kéo thả</string>
+           </property>
+           <property name="styleSheet">
+            <string>color: #6B7280; font-size: 11px;</string>
+           </property>
+          </widget>
+         </item>
+         
+         <!-- Drop zone area -->
+         <item>
+          <widget class="QWidget" name="dropZoneWidget">
+           <property name="minimumHeight">
+            <number>80</number>
+           </property>
+           <property name="styleSheet">
+            <string>QWidget { border: 2px dashed #D1D5DB; border-radius: 8px; background-color: #F9FAFB; }
+QWidget:hover { border-color: #3B82F6; background-color: #EBF8FF; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="dropZoneLayout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="dropIconLabel">
+              <property name="text">
+               <string>📁</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="styleSheet">
+               <string>font-size: 24px; margin: 4px;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="dropTextLabel">
+              <property name="text">
+               <string>Kéo thả ảnh vào đây hoặc</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="styleSheet">
+               <string>color: #6B7280; font-size: 12px; margin: 2px;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="chooseImagesBtn">
+              <property name="text">
+               <string>📂 Chọn ảnh từ máy</string>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #3B82F6; color: #FFFFFF; border: none; border-radius: 6px; padding: 8px 16px; font-size: 12px; font-weight: bold; margin: 4px; }
+QPushButton:hover { background-color: #2563EB; }
+QPushButton:pressed { background-color: #1D4ED8; }</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         
+         <!-- Control buttons -->
+         <item>
+          <layout class="QHBoxLayout" name="imageControlLayout">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <item>
+            <spacer name="imageControlSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="moveUpBtn">
+             <property name="text">
+              <string>⬆️</string>
+             </property>
+             <property name="toolTip">
+              <string>Di chuyển lên</string>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>32</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton { background-color: #F3F4F6; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 12px; }
+QPushButton:hover { background-color: #E5E7EB; }
+QPushButton:disabled { opacity: 0.5; }</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="moveDownBtn">
+             <property name="text">
+              <string>⬇️</string>
+             </property>
+             <property name="toolTip">
+              <string>Di chuyển xuống</string>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>32</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton { background-color: #F3F4F6; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 12px; }
+QPushButton:hover { background-color: #E5E7EB; }
+QPushButton:disabled { opacity: 0.5; }</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="removeImageBtn">
+             <property name="text">
+              <string>🗑️</string>
+             </property>
+             <property name="toolTip">
+              <string>Xóa ảnh đã chọn</string>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>32</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton { background-color: #FEF2F2; border: 1px solid #FECACA; border-radius: 4px; font-size: 12px; }
+QPushButton:hover { background-color: #FEE2E2; }
+QPushButton:disabled { opacity: 0.5; }</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="clearImagesBtn">
+             <property name="text">
+              <string>🧹</string>
+             </property>
+             <property name="toolTip">
+              <string>Xóa tất cả ảnh</string>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>32</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton { background-color: #FEF2F2; border: 1px solid #FECACA; border-radius: 4px; font-size: 12px; }
+QPushButton:hover { background-color: #FEE2E2; }
+QPushButton:disabled { opacity: 0.5; }</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Images list -->
+         <item>
+          <widget class="QListWidget" name="imagesListWidget">
+           <property name="minimumHeight">
+            <number>120</number>
+           </property>
+           <property name="maximumHeight">
+            <number>300</number>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="styleSheet">
+            <string>QListWidget { border: 1px solid #D1D5DB; border-radius: 6px; background-color: #FFFFFF; font-size: 11px; }
+QListWidget::item { padding: 8px; border-bottom: 1px solid #F3F4F6; margin: 2px; border-radius: 4px; }
+QListWidget::item:selected { background-color: #EBF8FF; border: 1px solid #3B82F6; }
+QListWidget::item:hover { background-color: #F8FAFC; }</string>
+           </property>
+          </widget>
+         </item>
+         
+         <!-- Spacer để đẩy content lên trên -->
+         <item>
+          <spacer name="imageManagerSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      
+      <!-- FORM PANEL (30%) -->
+      <item>
+       <widget class="QWidget" name="formCard">
+        <property name="objectName">
+         <string>formCard</string>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>30</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QVBoxLayout" name="formLayout">
+         <property name="spacing">
+          <number>16</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         
+         <!-- Title -->
+         <item>
+          <widget class="QLabel" name="formTitle">
+           <property name="objectName">
+            <string>formTitle</string>
+           </property>
+           <property name="text">
+            <string>THÊM / SỬA SHORTCUT</string>
+           </property>
+          </widget>
+         </item>
+         
+         <!-- Shortcut input -->
+         <item>
+          <layout class="QVBoxLayout" name="shortcutInputLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="shortcutLabel">
+             <property name="text">
+              <string>Shortcut</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="shortcutLineEdit">
+             <property name="placeholderText">
+              <string>Nhập shortcut muốn tạo</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Type selection -->
+         <item>
+          <layout class="QVBoxLayout" name="typeSelectionLayout">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="typeButtonsLayout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <item>
+              <widget class="QRadioButton" name="textRadioBtn">
+               <property name="text">
+                <string>Văn bản</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="imageRadioBtn">
+               <property name="text">
+                <string>Hình ảnh</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="mixedRadioBtn">
+               <property name="text">
+                <string>Văn bản + Ảnh</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Content area -->
+         <item>
+          <layout class="QVBoxLayout" name="contentLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="contentLabel">
+             <property name="text">
+              <string>Nội dung</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="contentTextEdit">
+             <property name="maximumHeight">
+              <number>200</number>
+             </property>
+             <property name="placeholderText">
+              <string>Nhập nội dung...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Additional info section -->
+         <item>
+          <layout class="QVBoxLayout" name="additionalInfoLayout">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="placeholderLabel">
+             <property name="text">
+              <string><!-- Dynamic content will be inserted here --></string>
+             </property>
+             <property name="styleSheet">
+              <string>color: #9CA3AF; font-size: 10px; font-style: italic;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- Activate checkbox -->
+         <item>
+          <widget class="QCheckBox" name="activateCheckBox">
+           <property name="text">
+            <string>Kích hoạt shortcut</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         
+         <!-- Spacer để đẩy buttons xuống dưới -->
+         <item>
+          <spacer name="formSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         
+         <!-- Action buttons -->
+         <item>
+          <layout class="QVBoxLayout" name="actionButtonsLayout">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="addBtn">
+             <property name="text">
+              <string>Thêm Shortcut</string>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton { background-color: #7FD0FF; color: #FFFFFF; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+QPushButton:hover { background-color: #3CB5FC; }
+QPushButton:pressed { background-color: #5AB8E0; }</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="editDeleteLayout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="deleteBtn">
+               <property name="text">
+                <string>Xóa</string>
+               </property>
+               <property name="styleSheet">
+                <string>QPushButton { background-color: #FC6157; color: #FFFFFF; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+QPushButton:hover { background-color: #FB4F45; }
+QPushButton:pressed { background-color: #E93E33; }</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="updateBtn">
+               <property name="text">
+                <string>Cập nhật</string>
+               </property>
+               <property name="styleSheet">
+                <string>QPushButton { background-color: #34B369; color: #FFFFFF; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+QPushButton:hover { background-color: #2DA55B; }
+QPushButton:pressed { background-color: #26964E; }</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    
+    <!-- FOOTER SECTION -->
+    <item>
+     <widget class="QWidget" name="footerWidget">
+      <property name="objectName">
+       <string>footerWidget</string>
+      </property>
+      <property name="maximumHeight">
+       <number>60</number>
+      </property>
+      <layout class="QHBoxLayout" name="footerLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       
+       <!-- Import/Export buttons -->
+       <item>
+        <layout class="QHBoxLayout" name="importExportLayout">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="importBtn">
+           <property name="text">
+            <string>📥 IMPORT</string>
+           </property>
+           <property name="styleSheet">
+            <string>QPushButton { background-color: #F9FAFB; color: #6B7280; border: 1px solid #D1D5DB; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+QPushButton:hover { background-color: #F3F4F6; border-color: #9CA3AF; }
+QPushButton:pressed { background-color: #E5E7EB; }</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="exportBtn">
+           <property name="text">
+            <string>📤 EXPORT</string>
+           </property>
+           <property name="styleSheet">
+            <string>QPushButton { background-color: #F9FAFB; color: #6B7280; border: 1px solid #D1D5DB; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+QPushButton:hover { background-color: #F3F4F6; border-color: #9CA3AF; }
+QPushButton:pressed { background-color: #E5E7EB; }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       
+       <!-- Spacer -->
+       <item>
+        <spacer name="footerSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       
+       <!-- Settings button -->
+       <item>
+        <widget class="QPushButton" name="settingsBtn">
+         <property name="text">
+          <string>⚙️ Cài đặt</string>
+         </property>
+         <property name="styleSheet">
+          <string>QPushButton { background-color: #F9FAFB; color: #6B7280; border: 1px solid #D1D5DB; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+QPushButton:hover { background-color: #F3F4F6; border-color: #9CA3AF; }
+QPushButton:pressed { background-color: #E5E7EB; }</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui> 

@@ -55,6 +55,25 @@
             "type": "text",
             "content": "dsadsadasdasd",
             "enabled": true
+        },
+        {
+            "keyword": "gg@",
+            "type": "text",
+            "content": "dsadada",
+            "enabled": false
+        },
+        {
+            "keyword": "ttt@",
+            "type": "mixed",
+            "content": {
+                "text": "sdadsadada",
+                "images": [
+                    "C:/Users/Admin/OneDrive/Tài liệu/z2998397963288_544aa463806e982d38bf84a21b65202c.jpg",
+                    "C:/Users/Admin/OneDrive/Tài liệu/z2998397970677_6258ddf1d7c8e5391d988b2727f5448f.jpg",
+                    "C:/Users/Admin/OneDrive/Tài liệu/z2998397974984_bb8e3ec84a0ae0590be7d450014fee88.jpg"
+                ]
+            },
+            "enabled": true
         }
     ]
 }

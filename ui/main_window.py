@@ -76,20 +76,22 @@ class MainWindow:
         self.root = tk.Tk()
         self.root.title("Auto Text & Image - SVN Poppins")
         
-        # ✨ Thiết lập chế độ toàn màn hình và vô hiệu hóa minimize
-        self.root.state('zoomed')  # Maximize window trên Windows
-        self.root.resizable(False, False)  # Không cho phép resize
+        # ✨ Thiết lập kích thước cửa sổ 1440x1080
+        window_width = 1440
+        window_height = 1080
         
-        # Vô hiệu hóa minimize button
-        self.root.attributes('-toolwindow', False)  # Giữ các button khác
-        
-        # Thiết lập fullscreen và không cho thoát bằng Alt+F4 
-        self.root.overrideredirect(False)  # Giữ title bar nhưng disable minimize
-        
-        # Lấy kích thước màn hình để set geometry phù hợp
+        # Tính toán vị trí để cửa sổ hiển thị ở giữa màn hình
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
-        self.root.geometry(f"{screen_width}x{screen_height}+0+0")
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        
+        # Thiết lập geometry cho cửa sổ
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        self.root.resizable(True, True)  # Cho phép resize
+        
+        # Thiết lập kích thước tối thiểu
+        self.root.minsize(1200, 800)
         
         # Ngăn không cho minimize bằng cách xử lý window state event
         # self.root.bind('<Unmap>', self._on_window_state_change)  # Tạm thời disable để tránh loop
@@ -97,9 +99,9 @@ class MainWindow:
         # Sử dụng cách khác: override window manager protocol
         self.root.protocol("WM_WINDOW_DELETE", self._on_closing)
         
-        # Thiết lập window attributes để ngăn minimize
+        # Thiết lập window attributes
         try:
-            # Trên Windows: Disable minimize button
+            # Trên Windows: Enable window controls
             import tkinter.messagebox
             self.root.attributes('-disabled', 0)  # Enable window
             # self.root.attributes('-topmost', True)  # Always on top (optional)
@@ -114,7 +116,7 @@ class MainWindow:
         self.font_manager = get_font_manager()
         print(f"🔤 Font hiện tại: {self.font_manager.get_font_family()}")
         print(f"✨ Font SVN Poppins loaded: {self.font_manager.is_loaded()}")
-        print(f"📺 Chế độ toàn màn hình: {screen_width}x{screen_height}")
+        print(f"📺 Kích thước cửa sổ: {window_width}x{window_height}")
         
         # Configure modern style
         self._configure_style()
@@ -126,6 +128,7 @@ class MainWindow:
         self.keyboard_monitor = KeyboardMonitor(self.shortcut_manager)
         self.selected_index = None
         self.on_minimize_to_tray = None
+        self.current_shortcuts = []  # Danh sách shortcuts hiện tại (có thể đã lọc)
         
         # Setup callbacks
         self.keyboard_monitor.set_on_status_changed(self._on_monitoring_status_changed)
@@ -300,7 +303,7 @@ class MainWindow:
         
         # App title với icon hiện đại
         title_label = tk.Label(left_frame, 
-                              text=f"✨ Auto Text & Image {ModernIcons.FULLSCREEN}",
+                              text=f"✨ Auto Text & Image {ModernIcons.WINDOW}",
                               font=ModernStyle.get_heading_font(1),
                               bg=ModernStyle.WHITE,
                               fg=ModernStyle.GRAY_800)
@@ -337,7 +340,7 @@ class MainWindow:
         
         # Performance info với icon
         self.perf_label = tk.Label(right_frame,
-                                 text=f"{ModernIcons.BALANCED} Chế độ: Cân bằng | {ModernIcons.FULLSCREEN} Toàn màn hình",
+                                 text=f"{ModernIcons.BALANCED} Chế độ: Cân bằng | {ModernIcons.WINDOW} 1440x1080",
                                  font=ModernStyle.get_font(ModernStyle.FONT_SIZE_SMALL, TypographyScale.MEDIUM),
                                  bg=ModernStyle.WHITE,
                                  fg=ModernStyle.GRAY_500)
@@ -386,13 +389,39 @@ class MainWindow:
         list_frame = ttk.LabelFrame(parent, text=f"{ModernIcons.SHORTCUTS} Danh sách Shortcuts", style='Modern.TLabelframe')
         list_frame.grid(row=0, column=0, sticky="nsew", padx=(0, ModernStyle.SPACE_MD))
         list_frame.grid_columnconfigure(0, weight=1)
-        list_frame.grid_rowconfigure(0, weight=1)
+        list_frame.grid_rowconfigure(1, weight=1)  # Treeview ở row 1
         
         # List content
         list_content = tk.Frame(list_frame, bg=ModernStyle.WHITE)
         list_content.pack(fill=tk.BOTH, expand=True, padx=ModernStyle.SPACE_MD, pady=ModernStyle.SPACE_MD)
         list_content.grid_columnconfigure(0, weight=1)
-        list_content.grid_rowconfigure(0, weight=1)
+        list_content.grid_rowconfigure(1, weight=1)  # Treeview ở row 1
+        
+        # Search frame
+        search_frame = tk.Frame(list_content, bg=ModernStyle.WHITE)
+        search_frame.grid(row=0, column=0, sticky="ew", pady=(0, ModernStyle.SPACE_SM))
+        search_frame.grid_columnconfigure(1, weight=1)
+        
+        # Search label
+        search_label = tk.Label(search_frame, text=f"{ModernIcons.SEARCH} Tìm kiếm shortcut:",
+                               font=ModernStyle.get_font(ModernStyle.FONT_SIZE_NORMAL, TypographyScale.SEMIBOLD),
+                               bg=ModernStyle.WHITE, fg=ModernStyle.GRAY_700)
+        search_label.grid(row=0, column=0, sticky="w", padx=(0, ModernStyle.SPACE_SM))
+        
+        # Search entry
+        self.search_var = tk.StringVar()
+        self.search_entry = ttk.Entry(search_frame, textvariable=self.search_var, 
+                                     style='Modern.TEntry',
+                                     font=ModernStyle.get_font(ModernStyle.FONT_SIZE_NORMAL))
+        self.search_entry.grid(row=0, column=1, sticky="ew")
+        
+        # Bind search event
+        self.search_var.trace_add('write', self._on_search_changed)
+        
+        # Clear search button
+        clear_search_btn = ttk.Button(search_frame, text=f"{ModernIcons.CLEAR}", 
+                                     command=self._clear_search, style='Secondary.TButton')
+        clear_search_btn.grid(row=0, column=2, sticky="w", padx=(ModernStyle.SPACE_XS, 0))
         
         # Treeview với style hiện đại và icons
         columns = ('keyword', 'type', 'content', 'status')
@@ -417,10 +446,10 @@ class MainWindow:
         scrollbar_x = ttk.Scrollbar(list_content, orient=tk.HORIZONTAL, command=self.tree.xview)
         self.tree.configure(xscrollcommand=scrollbar_x.set)
         
-        # Grid layout
-        self.tree.grid(row=0, column=0, sticky="nsew")
-        scrollbar_y.grid(row=0, column=1, sticky="ns")
-        scrollbar_x.grid(row=1, column=0, sticky="ew")
+        # Grid layout - treeview ở row 1
+        self.tree.grid(row=1, column=0, sticky="nsew")
+        scrollbar_y.grid(row=1, column=1, sticky="ns")
+        scrollbar_x.grid(row=2, column=0, sticky="ew")
         
         # Bind events
         self.tree.bind('<<TreeviewSelect>>', self._on_select_shortcut)
@@ -746,7 +775,7 @@ class MainWindow:
                            borderwidth=0, padx=ModernStyle.SPACE_SM, pady=ModernStyle.SPACE_SM)
         info_text.pack(fill=tk.BOTH, expand=True)
         
-        info_content_text = f"""✨ Auto Text & Image v1.3.2 - SVN Poppins Font + Fullscreen Mode
+        info_content_text = f"""✨ Auto Text & Image v1.3.6 - Single Instance Control
 
 {ModernIcons.TEXT} Font mới - SVN Poppins:
 • Font tiếng Việt đẹp, hiện đại và dễ đọc
@@ -754,15 +783,27 @@ class MainWindow:
 • Multiple weights: Regular, Medium, SemiBold, Bold
 • Tự động fallback về Segoe UI nếu không load được
 
-{ModernIcons.FULLSCREEN} Chế độ toàn màn hình:
-• Ứng dụng chạy fullscreen, không thể minimize
-• Giao diện tối ưu cho màn hình lớn  
+{ModernIcons.WINDOW} Chế độ cửa sổ 1440x1080:
+• Kích thước cố định tối ưu cho màn hình desktop
+• Có thể resize và di chuyển cửa sổ
+• Kích thước tối thiểu 1200x800
 • Hotkey thoát khẩn cấp: Ctrl+Alt+Q
-• Chỉ có thể ẩn xuống system tray hoặc thoát hoàn toàn
+
+{ModernIcons.LOCK} Single Instance Control:
+• Chỉ cho phép 1 phiên bản chạy cùng lúc
+• Tự động hiện cửa sổ khi mở app lần 2
+• Ngăn multiple icons trong system tray
+• File locking + inter-process communication
+
+{ModernIcons.SEARCH} Tính năng tìm kiếm mới:
+• Tìm kiếm shortcut theo keyword real-time
+• Chỉ tìm theo từ khóa, không tìm theo loại/nội dung
+• Giao diện hiện đại với icon 🔍 và nút xóa 🧹
+• Hiển thị "X/Y shortcuts" khi có kết quả tìm kiếm
 
 {ModernIcons.EDIT} Giao diện hiện đại:
 • Thiết kế với SVN Poppins typography system
-• Layout responsive, tối ưu cho fullscreen
+• Layout responsive, tối ưu cho kích thước 1440x1080
 • Icons và visual elements giúp dễ nhận diện
 • Hover effects và interactive elements
 
@@ -793,7 +834,7 @@ class MainWindow:
 {ModernIcons.SYSTEM} Điều khiển:
 • Thoát: Click nút X hoặc Ctrl+Alt+Q
 • Ẩn: Thu nhỏ xuống system tray
-• Không thể minimize cửa sổ
+• Có thể minimize và resize cửa sổ
 • Font SVN Poppins được load tự động khi khởi động"""
         
         info_text.insert(1.0, info_content_text)
@@ -820,7 +861,7 @@ class MainWindow:
         right_frame = tk.Frame(footer_content, bg=ModernStyle.WHITE)
         right_frame.pack(side=tk.RIGHT)
         
-        tk.Label(right_frame, text=f"✨ Auto Text & Image v1.3.2 - SVN Poppins {ModernIcons.FULLSCREEN}",
+        tk.Label(right_frame, text=f"✨ Auto Text & Image v1.3.6 - Search + 1440x1080 {ModernIcons.WINDOW}",
                 font=ModernStyle.get_font(ModernStyle.FONT_SIZE_SMALL, TypographyScale.MEDIUM),
                 bg=ModernStyle.WHITE, fg=ModernStyle.GRAY_500).pack()
     
@@ -847,7 +888,7 @@ class MainWindow:
                 mode_icon = ModernIcons.SAFE
         
         # Cập nhật với icons hiện đại
-        self.perf_label.config(text=f"{mode_icon} Chế độ: {mode} | {ModernIcons.FULLSCREEN} Toàn màn hình")
+        self.perf_label.config(text=f"{mode_icon} Chế độ: {mode} | {ModernIcons.WINDOW} 1440x1080")
     
     def _on_instant_trigger_changed(self):
         """Xử lý khi thay đổi chế độ instant trigger với icons hiện đại"""
@@ -974,14 +1015,34 @@ class MainWindow:
         for item in self.tree.get_children():
             self.tree.delete(item)
         
+        # Lấy danh sách shortcuts
+        all_shortcuts = self.config.get_shortcuts()
+        
+        # Lọc shortcuts nếu có tìm kiếm
+        search_text = getattr(self, 'search_var', None)
+        if search_text and search_text.get().strip():
+            filtered_shortcuts = self._filter_shortcuts(all_shortcuts, search_text.get().strip())
+        else:
+            filtered_shortcuts = all_shortcuts
+        
+        # Lưu danh sách hiện tại để sử dụng trong _on_select_shortcut
+        self.current_shortcuts = filtered_shortcuts
+        
         # Thêm shortcuts với icons hiện đại
-        for i, shortcut in enumerate(self.config.get_shortcuts()):
+        for i, shortcut in enumerate(filtered_shortcuts):
             # Status icon với màu sắc
             status_icon = ModernIcons.get_status_icon(shortcut.get('enabled', True))
             status_text = "Bật" if shortcut.get('enabled', True) else "Tắt"
             
             content = shortcut['content']
-            if len(content) > 40:
+            if isinstance(content, dict):
+                # Mixed content - hiển thị text + số lượng ảnh
+                text_part = content.get('text', '')
+                images_count = len(content.get('images', []))
+                if text_part and len(text_part) > 30:
+                    text_part = text_part[:27] + "..."
+                content = f"{text_part} + {images_count} ảnh" if images_count > 0 else text_part
+            elif isinstance(content, str) and len(content) > 40:
                 content = content[:37] + "..."
             
             # Hiển thị loại shortcut với icon hiện đại
@@ -1002,21 +1063,68 @@ class MainWindow:
             ))
         
         # Cập nhật số lượng với icon
-        count = len(self.config.get_shortcuts())
-        self.count_label.config(text=f"{ModernIcons.SHORTCUTS} {count} shortcuts")
+        count = len(filtered_shortcuts)
+        total_count = len(all_shortcuts)
+        if search_text and search_text.get().strip():
+            self.count_label.config(text=f"{ModernIcons.SHORTCUTS} {count}/{total_count} shortcuts")
+        else:
+            self.count_label.config(text=f"{ModernIcons.SHORTCUTS} {count} shortcuts")
         
         # Reload shortcuts trong manager
         self.shortcut_manager.reload_shortcuts()
         
         # 🔥 QUAN TRỌNG: Cập nhật cache keywords để có thể sử dụng shortcuts mới ngay lập tức
         self.keyboard_monitor.refresh_keywords_cache()
+
+    def _filter_shortcuts(self, shortcuts_list, search_text):
+        """Lọc danh sách shortcuts theo keyword (chỉ tìm theo keyword, không tìm theo loại hay nội dung)"""
+        if not search_text:
+            return shortcuts_list
+        
+        search_text = search_text.lower()
+        filtered = []
+        
+        for shortcut in shortcuts_list:
+            # Chỉ tìm kiếm theo keyword
+            keyword = shortcut.get('keyword', '').lower()
+            if search_text in keyword:
+                filtered.append(shortcut)
+        
+        return filtered
+
+    def _on_search_changed(self, *args):
+        """Xử lý khi nội dung tìm kiếm thay đổi"""
+        # Reload danh sách với tìm kiếm
+        self._load_shortcuts()
+
+    def _clear_search(self):
+        """Xóa nội dung tìm kiếm"""
+        if hasattr(self, 'search_var'):
+            self.search_var.set("")
+            self.search_entry.focus_set()
     
     def _on_select_shortcut(self, event):
         """Xử lý khi chọn shortcut trong danh sách"""
         selection = self.tree.selection()
         if selection:
-            self.selected_index = self.tree.index(selection[0])
-            shortcut = self.config.get_shortcuts()[self.selected_index]
+            # Lấy index trong danh sách hiện tại (đã lọc)
+            selected_index_in_filtered = self.tree.index(selection[0])
+            
+            # Lấy shortcut từ danh sách hiện tại
+            if hasattr(self, 'current_shortcuts') and selected_index_in_filtered < len(self.current_shortcuts):
+                shortcut = self.current_shortcuts[selected_index_in_filtered]
+                
+                # Tìm index của shortcut này trong danh sách gốc
+                all_shortcuts = self.config.get_shortcuts()
+                for i, original_shortcut in enumerate(all_shortcuts):
+                    if original_shortcut['keyword'] == shortcut['keyword']:
+                        self.selected_index = i
+                        break
+                else:
+                    self.selected_index = None
+                    return
+            else:
+                return
             
             # Load vào form với animation
             self.keyword_entry.delete(0, tk.END)
@@ -1344,16 +1452,6 @@ class MainWindow:
         # Method này đã được disable để tránh infinite loop
         pass
     
-    def _force_fullscreen(self):
-        """Ép buộc cửa sổ ở chế độ fullscreen"""
-        try:
-            self.root.state('zoomed')
-            self.root.lift()
-            self.root.focus_force()
-            print("🔒 Đã áp dụng chế độ fullscreen")
-        except Exception as e:
-            print(f"❌ Lỗi khi force fullscreen: {e}")
-    
     def _on_closing(self):
         """Xử lý khi đóng cửa sổ - chỉ cho phép thoát hoàn toàn hoặc ẩn"""
         if self.minimize_to_tray_var.get() and self.on_minimize_to_tray:
@@ -1376,25 +1474,23 @@ class MainWindow:
         self.on_minimize_to_tray = callback
     
     def show(self):
-        """Hiển thị cửa sổ ở chế độ toàn màn hình"""
+        """Hiển thị cửa sổ ở kích thước 1440x1080"""
         self.root.deiconify()
-        self._force_fullscreen()  # Sử dụng method riêng
-        print("📺 Hiển thị ở chế độ toàn màn hình")
+        self.root.lift()
+        self.root.focus_force()
+        print("📺 Hiển thị cửa sổ ở kích thước 1440x1080")
     
     def hide(self):
-        """Ẩn cửa sổ (chỉ ẩn, không minimize)"""
+        """Ẩn cửa sổ"""
         self.root.withdraw()
-        print("👁️ Ẩn cửa sổ (không minimize)")
+        print("👁️ Ẩn cửa sổ")
     
     def start(self):
         """Khởi động ứng dụng"""
         self.keyboard_monitor.start_monitoring()
         self._update_performance_info()
         
-        # Đảm bảo fullscreen khi start
-        self.root.after(100, self._force_fullscreen)
-        
-        print("🚀 Khởi động ứng dụng ở chế độ toàn màn hình")
+        print("🚀 Khởi động ứng dụng ở kích thước 1440x1080")
         self.root.mainloop()
     
     def stop(self):

@@ -49,6 +49,12 @@
                 ]
             },
             "enabled": true
+        },
+        {
+            "keyword": "dsada",
+            "type": "text",
+            "content": "dsadsadasdasd",
+            "enabled": true
         }
     ]
 }

@@ -6,11 +6,13 @@ import sys
 import os
 from ui.main_window import MainWindow
 from system_tray import SystemTray
+from utils.single_instance import ensure_single_instance
 
 class AutoTextImageApp:
     def __init__(self):
         self.main_window = MainWindow()
         self.system_tray = SystemTray()
+        self.single_instance = None
         
         # Kết nối các callback
         self.main_window.set_on_minimize_to_tray(self._on_minimize_to_tray)
@@ -26,6 +28,10 @@ class AutoTextImageApp:
                 original_callback(is_active)
             self.system_tray.update_icon(is_active)
         self.main_window.keyboard_monitor.set_on_status_changed(new_callback)
+        
+    def set_single_instance(self, single_instance):
+        """Đặt single instance object"""
+        self.single_instance = single_instance
         
     def _on_minimize_to_tray(self):
         """Xử lý khi minimize to tray"""
@@ -43,6 +49,11 @@ class AutoTextImageApp:
         try:
             self.main_window.stop()
             self.system_tray.stop()
+            
+            # Giải phóng single instance lock
+            if self.single_instance:
+                self.single_instance.release_lock()
+                
             self.main_window.root.quit()
             self.main_window.root.destroy()
         except:
@@ -50,10 +61,23 @@ class AutoTextImageApp:
         finally:
             os._exit(0)  # Force exit để tránh SystemExit exception
     
+    def check_signals_periodically(self):
+        """Kiểm tra signals từ instance khác định kỳ"""
+        if self.single_instance and self.single_instance.check_for_show_signal():
+            # Có signal từ instance khác, hiện cửa sổ
+            self.main_window.show()
+            
+        # Lên lịch kiểm tra lại sau 500ms
+        self.main_window.root.after(500, self.check_signals_periodically)
+    
     def run(self):
         """Chạy ứng dụng"""
         # Khởi động system tray
         self.system_tray.start()
+        
+        # Bắt đầu kiểm tra signals
+        if self.single_instance:
+            self.check_signals_periodically()
         
         # Khởi động main window
         self.main_window.start()
@@ -61,6 +85,14 @@ class AutoTextImageApp:
 def main():
     """Entry point"""
     try:
+        # Kiểm tra single instance trước
+        single_instance = ensure_single_instance("AutoTextImage")
+        if not single_instance:
+            print("⚠️ Ứng dụng đã được chạy. Hiện cửa sổ của phiên bản đang chạy...")
+            sys.exit(0)
+            
+        print("🔒 Single instance lock acquired successfully")
+        
         # Kiểm tra quyền administrator (khuyến nghị cho keyboard hook)
         import ctypes
         if not ctypes.windll.shell32.IsUserAnAdmin():
@@ -69,7 +101,13 @@ def main():
         
         # Khởi động ứng dụng
         app = AutoTextImageApp()
-        app.run()
+        app.set_single_instance(single_instance)
+        
+        try:
+            app.run()
+        finally:
+            # Đảm bảo giải phóng lock khi thoát
+            single_instance.release_lock()
         
     except KeyboardInterrupt:
         print("\nỨng dụng đã được dừng bởi người dùng")

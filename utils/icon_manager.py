@@ -50,6 +50,7 @@ class ModernIcons:
     CLOSE = "✖️"             # Close
     MINIMIZE = "🔽"          # Minimize
     MAXIMIZE = "🔼"          # Maximize
+    LOCK = "🔒"              # Lock/Security
     
     # ===== ADVANCED =====
     FULLSCREEN = "📺"        # Fullscreen mode

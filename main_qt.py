@@ -225,8 +225,14 @@ class TextNowQtApp:
                 # Start minimized to tray for silent startup
                 if not self.is_exe_mode:
                     print("🔇 Starting in silent mode (minimized to tray)")
-                # Don't call show(), window will be hidden by default
-                # System tray will be available for user to open
+                
+                # Đảm bảo window được tạo nhưng không hiển thị
+                # Window sẽ ẩn và chỉ hiển thị qua system tray
+                self.main_window.hide()
+                
+                # Không hiển thị notification khi khởi động ẩn để giữ im lặng hoàn toàn
+                # Ứng dụng sẽ chạy ngầm mà không làm phiền người dùng
+                
             else:
                 self.main_window.show()
                 if not self.is_exe_mode:
@@ -263,6 +269,16 @@ def main():
     
     try:
         app = TextNowQtApp()
+        
+        # Kiểm tra command line arguments để xác định startup mode
+        # Hỗ trợ: --hidden, --silent, --minimized, --tray
+        if len(sys.argv) > 1:
+            args = [arg.lower() for arg in sys.argv[1:]]
+            if any(arg in ['--hidden', '--silent', '--minimized', '--tray', '-h', '-s'] for arg in args):
+                app.startup_mode = True
+                if not is_exe:
+                    print("🔇 Silent startup mode enabled via command line")
+        
         exit_code = app.run()
         
         if not is_exe:

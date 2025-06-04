@@ -257,3 +257,193 @@ python test_font.py
 ---
 
 **Made with ❤️ in Vietnam - Powered by SVN Poppins Typography** 
+
+# 🚀 TextNow - Auto Text & Image v2.0.1
+
+**Ứng dụng gõ tắt thông minh cho Windows với giao diện PySide6 hiện đại**
+
+## ✨ Tính năng chính
+
+- 🔤 **Auto Text**: Gõ tắt để chèn văn bản đã định sẵn
+- 🖼️ **Auto Image**: Gõ tắt để chèn hình ảnh
+- 🎭 **Mixed Mode**: Kết hợp văn bản và hình ảnh
+- 📱 **System Tray**: Chạy ngầm trong khay hệ thống
+- 🔇 **Hidden Startup**: Khởi động ẩn cùng Windows
+- 🎨 **Modern UI**: Giao diện đẹp mắt với PySide6
+- 🛡️ **Single Instance**: Chỉ chạy một phiên bản
+- 💾 **Import/Export**: Sao lưu và khôi phục cài đặt
+
+## 🔇 Tính năng Startup Ẩn - MỚI!
+
+### 🚀 Khởi động ẩn - Nhiều cách sử dụng:
+
+#### 1. **Command Line**
+```bash
+# Các cách khởi động ẩn
+python main_qt.py --hidden
+python main_qt.py --silent
+python main_qt.py --minimized
+python main_qt.py --tray
+
+# Hoặc dùng flag ngắn
+python main_qt.py -h
+python main_qt.py -s
+```
+
+#### 2. **Batch File - Đơn giản nhất**
+```batch
+# Chạy file có sẵn
+start_textnow_hidden.bat
+```
+
+#### 3. **Auto Startup cùng Windows**
+1. Mở TextNow
+2. Nhấp chuột phải vào **System Tray Icon**
+3. Chọn **"🚀 Khởi động cùng Windows"**
+4. ✅ **Xong!** Phần mềm sẽ tự động chạy ẩn mỗi khi khởi động Windows
+
+### 📱 Sử dụng System Tray:
+- **Nhấp đúp** icon để mở cửa sổ chính
+- **Chuột phải** để xem menu với đầy đủ tùy chọn
+- **Im lặng hoàn toàn**: Không có notification khi khởi động ẩn
+- **Kiểm tra tray**: Tìm icon TextNow trong khay hệ thống để xác nhận đang chạy
+
+## 💻 Yêu cầu hệ thống
+
+- **Windows 10/11** (64-bit)
+- **Python 3.8+** 
+- **PySide6** (tự động cài đặt)
+
+## 🚀 Cách sử dụng
+
+### Cài đặt nhanh:
+```bash
+# Clone hoặc tải về
+git clone <repository-url>
+cd textnow
+
+# Cài đặt dependencies
+pip install -r requirements_qt.txt
+
+# Chạy ứng dụng
+python main_qt.py
+
+# Hoặc chạy ẩn ngay
+python main_qt.py --hidden
+```
+
+### Khởi động thông thường:
+```bash
+# Chạy với giao diện
+python main_qt.py
+
+# Hoặc dùng batch file
+run_qt.bat
+```
+
+### Khởi động ẩn:
+```bash
+# Chạy ẩn ngay vào system tray
+start_textnow_hidden.bat
+
+# Hoặc dùng lệnh
+python main_qt.py --hidden
+```
+
+## 📋 Hướng dẫn sử dụng
+
+### Tạo Shortcut:
+1. Nhập **Shortcut** (từ khóa gõ tắt)
+2. Chọn **loại**: Văn bản, Hình ảnh, hoặc Văn bản + Ảnh
+3. Nhập **nội dung** hoặc chọn ảnh
+4. **Bấm "Thêm Shortcut"**
+
+### Sử dụng Shortcut:
+- Gõ từ khóa shortcut trong bất kỳ ứng dụng nào
+- Nội dung sẽ tự động được chèn vào
+
+### Quản lý ảnh:
+- Kéo thả ảnh vào vùng **Quản lý ảnh**
+- Tối đa **20 ảnh**, thứ tự từ 1-20
+- Sử dụng các nút điều khiển để sắp xếp
+
+## 🎛️ System Tray Menu
+
+Khi chạy ẩn, menu system tray bao gồm:
+- 📺 **Hiển thị cửa sổ** - Mở giao diện chính
+- 📋 **Shortcuts: X** - Số lượng shortcuts
+- 🔄 **Trạng thái** - Đang theo dõi/Tạm dừng
+- ⚙️ **Cài đặt** - Tùy chọn
+- 🚀 **Khởi động cùng Windows** - Bật/tắt
+- 🚪 **Thoát** - Đóng ứng dụng
+
+## 🔧 Build thành EXE
+
+```bash
+# Cài đặt PyInstaller
+pip install pyinstaller
+
+# Build
+python -m PyInstaller TextNowQt.spec
+
+# File EXE sẽ ở trong thư mục dist/
+```
+
+## 📂 Cấu trúc dự án
+
+```
+textnow/
+├── main_qt.py              # Entry point chính
+├── main_qt_silent.py       # Entry point startup ẩn  
+├── start_textnow_hidden.bat # Batch khởi động ẩn
+├── qt_ui/                   # Giao diện PySide6
+│   ├── main_window_qt.py   # Main window controller
+│   └── forms/              # UI files
+├── core/                    # Logic chính
+│   ├── shortcut_manager.py # Quản lý shortcuts
+│   └── keyboard_monitor.py # Theo dõi bàn phím
+├── utils/                   # Tiện ích
+└── docs/                    # Tài liệu
+```
+
+## 🆘 Troubleshooting
+
+### Ứng dụng không khởi động ẩn?
+1. Kiểm tra **System Tray** (có thể bị ẩn)
+2. Kiểm tra Python: `python --version`
+3. Cài lại dependencies: `pip install -r requirements_qt.txt`
+
+### System Tray không hiện icon?
+1. **Windows Settings** → Taskbar → "Show all icons"
+2. Restart Windows Explorer:
+   ```cmd
+   taskkill /f /im explorer.exe
+   start explorer.exe
+   ```
+
+### Auto startup không hoạt động?
+1. Chạy với quyền **Administrator**
+2. Kiểm tra Registry: `regedit` → `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`
+
+## 📖 Tài liệu bổ sung
+
+- [`HIDDEN_STARTUP_GUIDE.md`](HIDDEN_STARTUP_GUIDE.md) - Hướng dẫn chi tiết tính năng startup ẩn
+- [`CHANGELOG.md`](CHANGELOG.md) - Lịch sử cập nhật
+- [`README_QT_MIGRATION.md`](README_QT_MIGRATION.md) - Quá trình chuyển đổi UI
+
+## 📞 Hỗ trợ
+
+- 🐛 **Bug Reports**: Tạo issue với thông tin chi tiết
+- 💡 **Feature Requests**: Đề xuất tính năng mới
+- 📧 **Contact**: Email hỗ trợ
+
+## 🏷️ Version Info
+
+- **Version**: 2.0.1
+- **UI Framework**: PySide6 (Qt 6)
+- **Platform**: Windows 10/11
+- **Python**: 3.8+
+
+---
+
+**🔇 Lưu ý**: Để sử dụng tính năng startup ẩn, hãy đọc [`HIDDEN_STARTUP_GUIDE.md`](HIDDEN_STARTUP_GUIDE.md) để biết chi tiết! 

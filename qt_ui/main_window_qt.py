@@ -143,10 +143,113 @@ class MainWindowQt(QMainWindow):
         # Load logo image
         self._load_logo()
         
+        # Setup checkmark images với đường dẫn tuyệt đối
+        self._setup_checkmark_images()
+        
         # Setup dynamic image list widget
         self._setup_dynamic_widgets()
         
         print("✅ UI setup completed")
+    
+    def _setup_checkmark_images(self):
+        """Setup checkmark images cho radio buttons và checkbox với đường dẫn tuyệt đối"""
+        try:
+            # Get absolute paths
+            project_root = Path(__file__).parent.parent
+            checkmark_path = project_root / "checkmark.png"
+            checkmark_vector_path = project_root / "checkmark_vector.png"
+            
+            # Convert to simple absolute paths for CSS (no URL encoding)
+            checkmark_path_str = str(checkmark_path).replace('\\', '/')
+            checkmark_vector_path_str = str(checkmark_vector_path).replace('\\', '/')
+            
+            print(f"📝 Setting up checkmarks:")
+            print(f"  Radio buttons: {checkmark_path} {'✅' if checkmark_path.exists() else '❌'}")
+            print(f"  Checkbox: {checkmark_vector_path} {'✅' if checkmark_vector_path.exists() else '❌'}")
+            print(f"  Radio path: {checkmark_path_str}")
+            print(f"  Checkbox path: {checkmark_vector_path_str}")
+            
+            # Radio buttons stylesheet với checkmark tuyệt đối
+            if checkmark_path.exists():
+                radio_style = f"""
+                QRadioButton {{
+                  font-size: 16px;
+                  font-weight: 500;
+                  color: #374151;
+                  spacing: 12px;
+                  padding: 8px 16px;
+                  min-height: 40px;
+                }}
+                QRadioButton::indicator {{
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 4px;
+                  border: 2px solid #D1D5DB;
+                  background-color: #FFFFFF;
+                }}
+                QRadioButton::indicator:checked {{
+                  background-color: #3B82F6;
+                  border-color: #3B82F6;
+                  image: url("{checkmark_path_str}");
+                }}
+                QRadioButton::indicator:hover {{
+                  border-color: #9CA3AF;
+                }}
+                QRadioButton:checked {{
+                  color: #3B82F6;
+                  font-weight: 600;
+                }}
+                """
+                
+                # Apply to all radio buttons
+                if hasattr(self.ui, 'textRadioBtn'):
+                    self.ui.textRadioBtn.setStyleSheet(radio_style)
+                if hasattr(self.ui, 'imageRadioBtn'):
+                    self.ui.imageRadioBtn.setStyleSheet(radio_style)
+                if hasattr(self.ui, 'mixedRadioBtn'):
+                    self.ui.mixedRadioBtn.setStyleSheet(radio_style)
+            
+            # Checkbox stylesheet với checkmark_vector tuyệt đối
+            if checkmark_vector_path.exists():
+                checkbox_style = f"""
+                QCheckBox {{
+                  font-size: 16px;
+                  font-weight: 500;
+                  color: #374151;
+                  spacing: 12px;
+                  padding: 8px 16px;
+                  min-height: 40px;
+                }}
+                QCheckBox::indicator {{
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 4px;
+                  border: 2px solid #D1D5DB;
+                  background-color: #FFFFFF;
+                }}
+                QCheckBox::indicator:checked {{
+                  background-color: #3B82F6;
+                  border-color: #3B82F6;
+                  image: url("{checkmark_vector_path_str}");
+                }}
+                QCheckBox::indicator:hover {{
+                  border-color: #9CA3AF;
+                }}
+                QCheckBox:checked {{
+                  color: #3B82F6;
+                  font-weight: 600;
+                }}
+                """
+                
+                # Apply to checkbox
+                if hasattr(self.ui, 'activateCheckBox'):
+                    self.ui.activateCheckBox.setStyleSheet(checkbox_style)
+            
+            print("✅ Checkmark images setup completed")
+            
+        except Exception as e:
+            print(f"❌ Checkmark images setup error: {e}")
+            # Continue without checkmarks - UI will still work
     
     def _load_logo(self):
         """Load logo image into logoIconLabel"""

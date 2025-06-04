@@ -74,6 +74,18 @@
                 ]
             },
             "enabled": true
+        },
+        {
+            "keyword": "t1@",
+            "type": "text",
+            "content": "q",
+            "enabled": true
+        },
+        {
+            "keyword": "t2@",
+            "type": "text",
+            "content": "13",
+            "enabled": true
         }
     ]
 }

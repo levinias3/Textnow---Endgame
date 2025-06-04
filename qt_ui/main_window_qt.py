@@ -353,17 +353,31 @@ class MainWindowQt(QMainWindow):
             
             # Get current executable path
             if getattr(sys, 'frozen', False):
-                # Running as exe
-                app_path = sys.executable
+                # Running as exe - use exe path directly
+                app_path = f'"{sys.executable}"'
             else:
-                # Running as script
-                app_path = f'"{sys.executable}" "{Path(__file__).parent.parent / "main_qt.py"}"'
+                # Running as script - use pythonw.exe with silent startup script
+                python_exe = sys.executable
+                
+                # Use pythonw.exe instead of python.exe to avoid terminal
+                if python_exe.endswith('python.exe'):
+                    pythonw_exe = python_exe.replace('python.exe', 'pythonw.exe')
+                else:
+                    pythonw_exe = python_exe  # Fallback
+                
+                # Use silent startup script
+                script_path = Path(__file__).parent.parent / "main_qt_silent.py"
+                app_path = f'"{pythonw_exe}" "{script_path}"'
             
+            print(f"🔧 Setting startup command: {app_path}")
             winreg.SetValueEx(key, "TextNow", 0, winreg.REG_SZ, app_path)
             winreg.CloseKey(key)
             
             print("✅ Auto startup enabled")
-            QMessageBox.information(self, "Thành công", "Đã bật khởi động cùng Windows")
+            QMessageBox.information(self, "Thành công", 
+                                  "Đã bật khởi động cùng Windows!\n\n"
+                                  "🔇 Phần mềm sẽ chạy im lặng khi khởi động\n"
+                                  "📱 Kiểm tra system tray để mở cửa sổ")
         except Exception as e:
             print(f"❌ Enable startup error: {e}")
             raise e

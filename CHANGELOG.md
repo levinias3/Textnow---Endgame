@@ -1,5 +1,47 @@
 # Changelog - Auto Text & Image
 
+## v2.0.1 - Terminal Independence (2025-01-06)
+
+### 🔓 Terminal Independence Solutions
+- **NEW**: `run_qt_silent.bat` - Chế độ khởi động silent với thông tin
+- **NEW**: `start_textnow.bat` - Khởi động nhanh hoàn toàn độc lập
+- **NEW**: Documentation `STARTUP_MODES.md` với hướng dẫn chi tiết
+- **SOLVED**: Vấn đề app bị tắt khi đóng terminal
+
+### 🚀 Multiple Startup Modes
+1. **🖥️ Debug Mode**: `run_qt.bat` / `run_qt_enhanced.bat` - Có logs, gắn terminal
+2. **🔇 Silent Mode**: `run_qt_silent.bat` - Hiển thị info, chạy độc lập  
+3. **⚡ Quick Mode**: `start_textnow.bat` - Khởi động siêu nhanh, hoàn toàn ẩn
+
+### 🔧 Technical Implementation
+- **ENHANCED**: Sử dụng `pythonw.exe` thay vì `python.exe` cho GUI mode
+- **ADDED**: Fallback với `start /min` nếu không có pythonw
+- **IMPROVED**: `main_qt_silent.py` với `startup_mode = True`
+- **OPTIMIZED**: Silent dependency installation và error handling
+
+### 💡 User Experience
+- **INDEPENDENT**: App chạy hoàn toàn độc lập khỏi terminal
+- **FLEXIBLE**: 3 chế độ khởi động phù hợp từng mục đích
+- **SEAMLESS**: Single instance vẫn hoạt động bình thường
+- **INFORMATIVE**: Hiển thị trạng thái khi cần, ẩn khi không cần
+
+### 📋 How To Use
+```batch
+# Sử dụng hằng ngày (khuyến nghị)
+start_textnow.bat
+
+# Muốn xem thông tin khởi động  
+run_qt_silent.bat
+
+# Debug và phát triển
+run_qt.bat
+```
+
+### ✅ Problem Solved
+- ❌ Tắt terminal → tắt app → ✅ App độc lập hoàn toàn
+- ❌ Terminal luôn hiển thị → ✅ Có thể ẩn hoặc hiện tuỳ chọn
+- ❌ Không biết app đã khởi động → ✅ Thông báo rõ ràng khi cần
+
 ## v1.3.6 - Single Instance Control (2025-01-06)
 
 ### 🔒 Single Instance Management
@@ -162,8 +204,6 @@ _clear_search()         # Reset search state
 - **ADDED**: Font validation và error handling
 - **ENHANCED**: Style configuration với font tuples
 - **IMPROVED**: Debug logging cho font operations
-
----
 
 ## v1.3.1 - Speed Fix (2025-01-05)
 

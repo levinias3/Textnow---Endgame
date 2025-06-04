@@ -3,12 +3,21 @@ Module xử lý cấu hình cho ứng dụng Auto Text & Image
 """
 import json
 import os
+from pathlib import Path
 from typing import List, Dict, Any
 
 class Config:
     def __init__(self, config_file: str = "shortcuts.json"):
-        self.config_file = config_file
+        # Always use absolute path relative to script location
+        if not os.path.isabs(config_file):
+            # Get the directory where the main script is located
+            script_dir = Path(__file__).parent.parent
+            self.config_file = str(script_dir / config_file)
+        else:
+            self.config_file = config_file
+            
         self.shortcuts = []
+        print(f"📁 Config file path: {self.config_file}")
         self.load()
     
     def load(self) -> bool:

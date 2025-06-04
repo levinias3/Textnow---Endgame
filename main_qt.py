@@ -34,6 +34,7 @@ class TextNowQtApp:
         self.app = None
         self.main_window = None
         self.single_instance = None
+        self.startup_mode = False  # Flag for silent startup
         
     def setup_application(self):
         """Setup QApplication with properties"""
@@ -92,14 +93,7 @@ class TextNowQtApp:
                 else:
                     print("⚠️ Could not communicate with existing instance")
                 
-                # Show message to user
-                QMessageBox.information(
-                    None, 
-                    "TextNow đã chạy", 
-                    "Ứng dụng TextNow đã được mở.\n\n"
-                    "Cửa sổ chính sẽ được hiển thị."
-                )
-                
+                # Exit silently without showing popup message
                 return False
             
             print("✅ Single instance check passed")
@@ -165,9 +159,15 @@ class TextNowQtApp:
             if not self.create_main_window():
                 return 1
             
-            # Show main window
-            self.main_window.show()
-            print("🚀 TextNow Qt started successfully!")
+            # Show main window (or hide if startup mode)
+            if self.startup_mode:
+                # Start minimized to tray for silent startup
+                print("🔇 Starting in silent mode (minimized to tray)")
+                # Don't call show(), window will be hidden by default
+                # System tray will be available for user to open
+            else:
+                self.main_window.show()
+                print("🚀 TextNow Qt started successfully!")
             
             # Run event loop
             return self.app.exec()

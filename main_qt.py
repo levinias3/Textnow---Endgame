@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-TextNow - Auto Text & Image v2.0.0
+TextNow - Auto Text & Image v2.0.1
 PySide6 UI Migration
 
-Entry point cho ứng dụng PySide6
+Entry point cho ứng dụng PySide6 - Optimized for EXE deployment
 """
 import sys
 import os
@@ -13,9 +13,38 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QIcon
 
-# Add project root to path
-project_root = Path(__file__).parent
+# ✅ EXE-optimized path handling
+def get_resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        # Development mode - use script directory
+        base_path = Path(__file__).parent.absolute()
+    
+    return os.path.join(base_path, relative_path)
+
+def get_data_path(relative_path):
+    """Get absolute path for user data files (always in app directory)"""
+    # For user data, always use the directory where exe/script is located
+    if getattr(sys, 'frozen', False):
+        # Running as exe
+        app_dir = Path(sys.executable).parent
+    else:
+        # Running as script
+        app_dir = Path(__file__).parent
+    
+    return app_dir / relative_path
+
+# Setup paths
+project_root = get_data_path("")  # Use data path for config files
 sys.path.insert(0, str(project_root))
+
+# Add resource path for bundled resources
+if hasattr(sys, '_MEIPASS'):
+    # In exe mode, also add MEIPASS to path for imports
+    sys.path.insert(0, sys._MEIPASS)
 
 try:
     from qt_ui.main_window_qt import MainWindowQt
@@ -24,60 +53,82 @@ except ImportError as e:
     print(f"❌ Import error: {e}")
     print("Traceback:")
     traceback.print_exc()
+    
+    # Try to show error in message box for exe mode
+    if getattr(sys, 'frozen', False):
+        try:
+            app = QApplication(sys.argv)
+            QMessageBox.critical(
+                None,
+                "Lỗi khởi động",
+                f"Không thể tải modules:\n\n{e}\n\n"
+                "Vui lòng báo cáo lỗi này cho developer."
+            )
+        except:
+            pass
+    
     sys.exit(1)
 
 
 class TextNowQtApp:
-    """Main application class"""
+    """Main application class - EXE optimized"""
     
     def __init__(self):
         self.app = None
         self.main_window = None
         self.single_instance = None
         self.startup_mode = False  # Flag for silent startup
+        self.is_exe_mode = getattr(sys, 'frozen', False)
         
     def setup_application(self):
         """Setup QApplication with properties"""
         # Create application
         self.app = QApplication(sys.argv)
         
-        # Fix: Remove deprecated DPI attributes for Qt 6
-        # Qt 6 has automatic high DPI scaling enabled by default
-        # Only set these if needed for older Qt versions
-        try:
-            # These are deprecated in Qt 6, but kept for compatibility
-            if hasattr(Qt.ApplicationAttribute, 'AA_EnableHighDpiScaling'):
-                # Only for Qt < 6.0
-                pass  # Skip deprecated attributes
-            
+        # ✅ Optimized for exe - no console output in exe mode
+        if not self.is_exe_mode:
             print("✅ DPI scaling: Using Qt 6 automatic scaling")
-        except Exception as e:
-            print(f"⚠️ DPI setup warning: {e}")
         
         # Set application properties
         self.app.setApplicationName("TextNow")
         self.app.setApplicationDisplayName("TextNow - Auto Text & Image")
-        self.app.setApplicationVersion("2.0.0")
+        self.app.setApplicationVersion("2.0.1")
         self.app.setOrganizationName("TextNow Team")
         self.app.setOrganizationDomain("textnow.app")
         
         # Set application icon
         self._set_app_icon()
         
-        print("✅ QApplication setup completed")
+        if not self.is_exe_mode:
+            print("✅ QApplication setup completed")
         
     def _set_app_icon(self):
-        """Set application icon"""
+        """Set application icon - EXE optimized"""
         try:
-            icon_path = project_root / "icon.png"
+            # Try bundled icon first (for exe)
+            icon_path = get_resource_path("icon.png")
+            if os.path.exists(icon_path):
+                icon = QIcon(icon_path)
+                self.app.setWindowIcon(icon)
+                if not self.is_exe_mode:
+                    print(f"✅ App icon set: {icon_path}")
+                return
+            
+            # Fallback to data directory
+            icon_path = get_data_path("icon.png")
             if icon_path.exists():
                 icon = QIcon(str(icon_path))
                 self.app.setWindowIcon(icon)
-                print(f"✅ App icon set: {icon_path}")
-            else:
+                if not self.is_exe_mode:
+                    print(f"✅ App icon set: {icon_path}")
+                return
+                
+            if not self.is_exe_mode:
                 print("⚠️ App icon not found")
+                
         except Exception as e:
-            print(f"❌ App icon error: {e}")
+            if not self.is_exe_mode:
+                print(f"❌ App icon error: {e}")
     
     def check_single_instance(self):
         """Check if another instance is running"""
@@ -85,22 +136,27 @@ class TextNowQtApp:
             self.single_instance = SingleInstance("TextNow_Qt")
             
             if not self.single_instance.acquire_lock():
-                print("📱 Another instance is already running")
+                if not self.is_exe_mode:
+                    print("📱 Another instance is already running")
                 
                 # Try to show existing window
                 if self.single_instance.send_show_signal():
-                    print("✅ Sent show signal to existing instance")
+                    if not self.is_exe_mode:
+                        print("✅ Sent show signal to existing instance")
                 else:
-                    print("⚠️ Could not communicate with existing instance")
+                    if not self.is_exe_mode:
+                        print("⚠️ Could not communicate with existing instance")
                 
-                # Exit silently without showing popup message
+                # Exit silently
                 return False
             
-            print("✅ Single instance check passed")
+            if not self.is_exe_mode:
+                print("✅ Single instance check passed")
             return True
             
         except Exception as e:
-            print(f"⚠️ Single instance check failed: {e}")
+            if not self.is_exe_mode:
+                print(f"⚠️ Single instance check failed: {e}")
             # Continue anyway
             return True
     
@@ -113,18 +169,22 @@ class TextNowQtApp:
             if self.single_instance:
                 self._setup_signal_checking()
             
-            print("✅ Main window created")
+            if not self.is_exe_mode:
+                print("✅ Main window created")
             return True
             
         except Exception as e:
-            print(f"❌ Main window creation failed: {e}")
-            traceback.print_exc()
+            error_msg = f"Không thể khởi tạo cửa sổ chính:\n\n{e}"
             
+            if not self.is_exe_mode:
+                print(f"❌ Main window creation failed: {e}")
+                traceback.print_exc()
+            
+            # Always show message box for critical errors
             QMessageBox.critical(
                 None,
-                "Lỗi khởi động",
-                f"Không thể khởi tạo cửa sổ chính:\n\n{e}\n\n"
-                "Vui lòng kiểm tra console để biết chi tiết."
+                "Lỗi khởi động", 
+                error_msg + "\n\nVui lòng báo cáo lỗi này."
             )
             return False
     
@@ -134,7 +194,8 @@ class TextNowQtApp:
             if self.single_instance:
                 if self.single_instance.check_for_show_signal():
                     if self.main_window:
-                        print("📱 Received SHOW_WINDOW signal")
+                        if not self.is_exe_mode:
+                            print("📱 Received SHOW_WINDOW signal")
                         self.main_window.show()
                         self.main_window.raise_()
                         self.main_window.activateWindow()
@@ -162,45 +223,56 @@ class TextNowQtApp:
             # Show main window (or hide if startup mode)
             if self.startup_mode:
                 # Start minimized to tray for silent startup
-                print("🔇 Starting in silent mode (minimized to tray)")
+                if not self.is_exe_mode:
+                    print("🔇 Starting in silent mode (minimized to tray)")
                 # Don't call show(), window will be hidden by default
                 # System tray will be available for user to open
             else:
                 self.main_window.show()
-                print("🚀 TextNow Qt started successfully!")
+                if not self.is_exe_mode:
+                    print("🚀 TextNow Qt started successfully!")
             
             # Run event loop
             return self.app.exec()
             
         except KeyboardInterrupt:
-            print("\n⚠️ Interrupted by user")
+            if not self.is_exe_mode:
+                print("\n⚠️ Interrupted by user")
             return 0
         except Exception as e:
-            print(f"❌ Application error: {e}")
-            traceback.print_exc()
+            if not self.is_exe_mode:
+                print(f"❌ Application error: {e}")
+                traceback.print_exc()
             return 1
         finally:
             # Cleanup
             if self.single_instance:
                 self.single_instance.release_lock()
-                print("🧹 Cleanup completed")
+                if not self.is_exe_mode:
+                    print("🧹 Cleanup completed")
 
 
 def main():
-    """Main entry point"""
-    print("🚀 Starting TextNow Qt v2.0.0...")
-    print(f"📂 Project root: {project_root}")
-    print(f"🐍 Python: {sys.version}")
+    """Main entry point - EXE optimized"""
+    is_exe = getattr(sys, 'frozen', False)
+    
+    if not is_exe:
+        print("🚀 Starting TextNow Qt v2.0.1...")
+        print(f"📂 Project root: {project_root}")
+        print(f"🐍 Python: {sys.version}")
     
     try:
         app = TextNowQtApp()
         exit_code = app.run()
-        print(f"✅ Application exited with code: {exit_code}")
+        
+        if not is_exe:
+            print(f"✅ Application exited with code: {exit_code}")
         return exit_code
         
     except Exception as e:
-        print(f"❌ Fatal error: {e}")
-        traceback.print_exc()
+        if not is_exe:
+            print(f"❌ Fatal error: {e}")
+            traceback.print_exc()
         return 1
 
 

@@ -77,14 +77,14 @@
              <height>40</height>
             </size>
            </property>
-           <property name="text">
-            <string>🧸</string>
+           <property name="pixmap">
+            <pixmap>logos/logo_64x64.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
-           </property>
-           <property name="styleSheet">
-            <string>font-size: 32px;</string>
            </property>
           </widget>
          </item>
@@ -99,7 +99,7 @@
               <string>logoLabel</string>
              </property>
              <property name="text">
-              <string>CHÀO BẠN, RẤT VUI VÌ BẠN ĐÃ TIN TƯƠNG VÀ</string>
+              <string>CHÀO BẠN, RẤT VUI VÌ BẠN ĐÃ TIN TƯỞNG VÀ</string>
              </property>
             </widget>
            </item>
@@ -827,7 +827,7 @@ QListWidget::item:hover { background-color: #F8FAFC; }</string>
               <string>Thêm Shortcut</string>
              </property>
              <property name="styleSheet">
-              <string>QPushButton { background-color: #7FD0FF; color: #FFFFFF; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+              <string>QPushButton { background-color: #3CB5FC; color: #FFFFFF; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
 QPushButton:hover { background-color: #3CB5FC; }
 QPushButton:pressed { background-color: #5AB8E0; }</string>
              </property>

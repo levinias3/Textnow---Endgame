@@ -14,7 +14,7 @@ class Config:
             script_dir = Path(__file__).parent.parent
             self.config_file = str(script_dir / config_file)
         else:
-        self.config_file = config_file
+            self.config_file = config_file
             
         self.shortcuts = []
         print(f"📁 Config file path: {self.config_file}")

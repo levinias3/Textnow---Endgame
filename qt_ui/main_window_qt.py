@@ -140,10 +140,33 @@ class MainWindowQt(QMainWindow):
         # Set window icon
         self._set_window_icon()
         
+        # Load logo image
+        self._load_logo()
+        
         # Setup dynamic image list widget
         self._setup_dynamic_widgets()
         
         print("✅ UI setup completed")
+    
+    def _load_logo(self):
+        """Load logo image into logoIconLabel"""
+        try:
+            # Use smaller logo for better performance
+            logo_path = Path(__file__).parent.parent / "logos" / "logo_64x64.png"
+            if logo_path.exists() and hasattr(self.ui, 'logoIconLabel'):
+                pixmap = QPixmap(str(logo_path))
+                # Scale pixmap to fit 40x40 while keeping aspect ratio
+                scaled_pixmap = pixmap.scaled(40, 40, Qt.AspectRatioMode.KeepAspectRatio, 
+                                            Qt.TransformationMode.SmoothTransformation)
+                self.ui.logoIconLabel.setPixmap(scaled_pixmap)
+                print(f"✅ Logo loaded: {logo_path}")
+            else:
+                if not logo_path.exists():
+                    print(f"⚠️ Logo file not found: {logo_path}")
+                if not hasattr(self.ui, 'logoIconLabel'):
+                    print("⚠️ logoIconLabel not found in UI")
+        except Exception as e:
+            print(f"❌ Logo loading error: {e}")
     
     def _setup_dynamic_widgets(self):
         """Setup dynamic widgets for image handling trong panel riêng"""

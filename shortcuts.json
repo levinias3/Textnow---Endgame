@@ -1,7 +1,7 @@
 {
     "shortcuts": [
         {
-            "keyword": "t@",
+            "keyword": "d@",
             "type": "text",
             "content": "# Vai trò & bối cảnh\nBạn là một kỹ sư phần mềm Python dày dạn kinh nghiệm, chuyên viết ứng dụng desktop cho Windows.  \nTôi muốn bạn thiết kế & lập trình **một phần mềm Auto Text & Image** (tương tự ảnh minh hoạ tôi đính kèm) theo các yêu cầu chi tiết bên dưới.\n\n# Mục tiêu tổng quát\nTạo một ứng dụng desktop nhẹ, chạy ngầm, cho phép người dùng định nghĩa “cụm từ tắt” (shortcut) và tự động chuyển chúng thành:\n1. **Văn bản đơn giản**  \n2. **Văn bản có định dạng** (giữ format rich-text khi dán vào Word, Gmail, v.v.)  \n3. **Ảnh** (copy ảnh vào clipboard để có thể ⌃V/⌘V dán thẳng)  \n\n# Yêu cầu chi tiết tính năng\n1. **Gõ tắt real-time**  \n   - Khi chương trình hoạt động, nếu người dùng gõ “vdm” + Space/Enter thì tự động xoá “vdm” và chèn “vuducmanh”.  \n   - Phải lắng nghe bàn phím ở mọi cửa sổ (global hook).  \n   - Cho phép thêm/sửa/xoá shortcut ngay trong UI, thay đổi có hiệu lực tức thì.\n\n2. **Quản lý cấu hình**  \n   - Lưu cấu hình shortcut vào một file **JSON** (ví dụ `shortcuts.json`).  \n   - Nút **Import** (chọn file JSON) và **Export** (ghi file JSON) trong UI.\n\n3. **Chế độ chạy ngầm & khay hệ thống (System Tray)**  \n   - Đóng cửa sổ chính ➜ thu nhỏ xuống khay (vẫn hoạt động).  \n   - Click phải biểu tượng khay có menu: *Mở cửa sổ*, *Tạm dừng / Tiếp tục*, *Thoát hẳn*.\n\n4. **Tự khởi động cùng Windows**  \n   - Tùy chọn “Khởi động cùng hệ thống” trong tab *Cài đặt*.  \n   - Cài đặt/rút gọn bằng cách thêm/xoá shortcut `.lnk` trong thư mục  `%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup`.\n\n5. **Giao diện**  \n   - Dùng **Tkinter** (hoặc PyQt6 tuỳ bạn chọn, nhưng ưu tiên Tkinter để giảm phụ thuộc).  \n   - Bố cục gồm:  \n     *Bảng danh sách* (DataGrid) shortcut bên trái, *Form thêm/sửa* bên phải, tab *Cài đặt*.  \n   - Hiển thị tổng số shortcut & trạng thái “Đang theo dõi bàn phím” giống ảnh minh hoạ.\n\n6. **Đóng gói**  \n   - Hướng dẫn build EXE bằng **PyInstaller** (one-file, icon riêng).  \n   - Giải thích cách ký ứng dụng nếu cần tránh SmartScreen.\n\n# Gợi ý thư viện\n- `keyboard` hoặc `pynput` để hook phím.  \n- `pyperclip` + `pywin32` cho clipboard (text & image).  \n- `pystray` để tạo system-tray.  \n- `Pillow` nếu cần chuyển hình ảnh sang clipboard.  \n\n# Yêu cầu về mã nguồn\n- Viết mã Python ≥ 3.10, cấu trúc thành các file:",
             "enabled": true
@@ -85,6 +85,42 @@
             "keyword": "t2@",
             "type": "text",
             "content": "13",
+            "enabled": true
+        },
+        {
+            "keyword": "test",
+            "type": "text",
+            "content": "This is a test",
+            "enabled": true
+        },
+        {
+            "keyword": "mail @",
+            "type": "text",
+            "content": "manjducvu0508@gmail.com",
+            "enabled": true
+        },
+        {
+            "keyword": "he @",
+            "type": "text",
+            "content": "dsadasdsa",
+            "enabled": true
+        },
+        {
+            "keyword": "linktr @",
+            "type": "text",
+            "content": "Bạn ib qua đây giúp mình: \nhttps://www.facebook.com/NTT66668888?mibextid=LQQJ4d",
+            "enabled": true
+        },
+        {
+            "keyword": "mailt @",
+            "type": "text",
+            "content": "nguyenanhtuan2003de@gmail.com",
+            "enabled": true
+        },
+        {
+            "keyword": "cccd@",
+            "type": "text",
+            "content": "dsadada",
             "enabled": true
         }
     ]

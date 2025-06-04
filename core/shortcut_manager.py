@@ -193,13 +193,14 @@ class ShortcutManager:
         self.update_shortcuts_dict()
     
     def is_valid_keyword(self, keyword: str) -> bool:
-        """Kiểm tra keyword có hợp lệ không"""
-        # Keyword phải có ít nhất 2 ký tự
-        if len(keyword) < 2:
+        """Kiểm tra keyword có hợp lệ không - Cho phép mọi định dạng"""
+        # Keyword phải có ít nhất 1 ký tự và không được trống
+        if not keyword or len(keyword.strip()) == 0:
             return False
         
-        # Không được chứa các ký tự điều khiển và khoảng trắng
-        invalid_chars = {' ', '\t', '\n', '\r', '\b', '\f', '\v'}
+        # Cho phép mọi loại ký tự và định dạng, kể cả dấu cách và ký tự đặc biệt
+        # Chỉ loại bỏ các ký tự điều khiển không in được
+        invalid_chars = {'\n', '\r', '\b', '\f', '\v'}
         return not any(char in invalid_chars for char in keyword)
     
     def get_shortcuts_count(self) -> int:

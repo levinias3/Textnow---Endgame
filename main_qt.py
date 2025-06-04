@@ -106,8 +106,26 @@ class TextNowQtApp:
         """Set application icon - EXE optimized"""
         try:
             # Try bundled icon first (for exe)
-            icon_path = get_resource_path("icon.png")
-            if os.path.exists(icon_path):
+            # Sử dụng icon chất lượng cao nhất có sẵn
+            high_quality_icons = [
+                "icons/icon_256x256.png",
+                "icons/icon_128x128.png", 
+                "icons/icon_64x64.png",
+                "icon.png",
+                "app.ico"
+            ]
+            
+            icon_path = None
+            for icon_file in high_quality_icons:
+                candidate_path = get_resource_path(icon_file)
+                if candidate_path and os.path.exists(candidate_path):
+                    icon_path = candidate_path
+                    break
+            
+            if not icon_path:
+                icon_path = get_resource_path("icon.png")
+                
+            if icon_path and os.path.exists(icon_path):
                 icon = QIcon(icon_path)
                 self.app.setWindowIcon(icon)
                 if not self.is_exe_mode:

@@ -88,11 +88,22 @@ class KeyboardMonitor:
             self.pending_trigger_timer = None
     
     def _schedule_auto_trigger(self, keyword: str):
-        """Lên lịch auto trigger với delay tối ưu"""
+        """Lên lịch auto trigger với delay tối ưu và kiểm tra chính xác"""
         self._cancel_pending_trigger()
+        
+        # Kiểm tra lại để đảm bảo keyword vẫn đúng
+        if not self.typed_buffer.endswith(keyword):
+            print(f"⚠️ Keyword '{keyword}' không còn ở cuối buffer '{self.typed_buffer}', bỏ qua")
+            return
+        
+        # Tránh trigger cùng keyword liên tục
+        if keyword == self.last_triggered_keyword:
+            print(f"⚠️ Keyword '{keyword}' đã được trigger, bỏ qua để tránh lặp")
+            return
         
         # Nếu instant trigger được bật, trigger ngay lập tức
         if self.instant_trigger or self.auto_trigger_delay <= 0.05:
+            print(f"⚡ Instant trigger cho '{keyword}'")
             self._trigger_shortcut_immediate(keyword)
             return
         
@@ -101,16 +112,23 @@ class KeyboardMonitor:
                 self.typed_buffer.endswith(keyword) and 
                 keyword != self.last_triggered_keyword):
                 
+                print(f"⏰ Auto trigger cho '{keyword}' sau delay {self.auto_trigger_delay}s")
                 self._trigger_shortcut_immediate(keyword)
         
+        print(f"⏲️ Lên lịch trigger '{keyword}' sau {self.auto_trigger_delay}s")
         self.pending_trigger_timer = threading.Timer(self.auto_trigger_delay, auto_trigger)
         self.pending_trigger_timer.start()
     
     def _trigger_shortcut_immediate(self, keyword: str):
-        """Trigger shortcut ngay lập tức với tốc độ tối ưu và sửa lỗi timing"""
+        """Trigger shortcut ngay lập tức với tốc độ tối ưu và xóa đúng keyword"""
         try:
-            print(f"🚀 Bắt đầu trigger shortcut '{keyword}'")
+            print(f"🚀 Bắt đầu trigger shortcut '{keyword}' (độ dài: {len(keyword)} ký tự)")
             print(f"📝 Buffer hiện tại: '{self.typed_buffer}'")
+            
+            # Kiểm tra xem keyword có thực sự ở cuối buffer không
+            if not self.typed_buffer.endswith(keyword):
+                print(f"❌ Keyword '{keyword}' không ở cuối buffer '{self.typed_buffer}', bỏ qua trigger")
+                return
             
             # Đánh dấu đã trigger để tránh lặp lại
             self.last_triggered_keyword = keyword
@@ -119,31 +137,32 @@ class KeyboardMonitor:
             
             print(f"🧹 Đã reset buffer và đánh dấu keyword: '{keyword}'")
             
-            # BƯỚC 1: Xóa keyword đã gõ trước tiên
-            print(f"🔙 BƯỚC 1: Xóa keyword '{keyword}' ({len(keyword)} ký tự)")
-            self._fast_backspace(len(keyword))
+            # BƯỚC 1: Xóa keyword đã gõ trước tiên - XÓA ĐÚNG SỐ KÝ TỰ CỦA KEYWORD
+            keyword_length = len(keyword)
+            print(f"🔙 BƯỚC 1: Xóa keyword '{keyword}' ({keyword_length} ký tự)")
+            self._fast_backspace(keyword_length)
             
             # Thêm delay nhỏ để đảm bảo backspace hoàn tất
-            time.sleep(0.010)  # 10ms delay sau backspace
+            time.sleep(0.015)  # Tăng từ 10ms lên 15ms để đảm bảo ổn định
             
             # BƯỚC 2: Xử lý shortcut (copy vào clipboard)
             print(f"📋 BƯỚC 2: Xử lý shortcut '{keyword}'")
             success = self.shortcut_manager.process_shortcut(keyword)
             
             if success:
-                # BƯỚC 3: Đợi một chút để đảm bảo clipboard đã sẵn sàng - tối ưu cho mixed content
+                # BƯỚC 3: Đợi một chút để đảm bảo clipboard đã sẵn sàng
                 print(f"⏱️ BƯỚC 3: Đợi clipboard sẵn sàng")
                 if self.instant_trigger or self.auto_trigger_delay <= 0.05:
-                    time.sleep(0.010)  # Giảm từ 15ms xuống 10ms cho instant mode
+                    time.sleep(0.015)  # Tăng từ 10ms lên 15ms cho instant mode
                 else:
-                    time.sleep(0.015)  # Giảm từ 25ms xuống 15ms cho chế độ khác
+                    time.sleep(0.020)  # Tăng từ 15ms lên 20ms cho chế độ khác
                 
                 # BƯỚC 4: Paste nội dung từ clipboard
                 print(f"📥 BƯỚC 4: Paste nội dung")
                 keyboard.send('ctrl+v')
                 
-                # Delay cuối để đảm bảo paste hoàn tất - tối ưu tốc độ
-                time.sleep(0.003)  # Giảm từ 5ms xuống 3ms
+                # Delay cuối để đảm bảo paste hoàn tất
+                time.sleep(0.005)  # Tăng từ 3ms lên 5ms
                 
                 # BƯỚC 5: Xử lý mixed content nếu có ảnh còn lại
                 if hasattr(self.shortcut_manager, 'pending_images') and self.shortcut_manager.pending_images:
@@ -183,57 +202,37 @@ class KeyboardMonitor:
             self.last_triggered_keyword = ""
     
     def _fast_backspace(self, count: int):
-        """Thực hiện backspace nhanh với cải tiến cho tốc độ cao và debugging"""
+        """Thực hiện backspace chính xác và đáng tin cậy"""
         try:
             if count <= 0:
                 return
             
             print(f"🔙 Đang xóa {count} ký tự...")
             
-            # Sử dụng phương pháp đơn giản và đáng tin cậy nhất cho keywords mới
-            if count <= 5:
-                # Với 5 ký tự trở xuống: backspace tuần tự (đáng tin cậy nhất)
-                for i in range(count):
-                    keyboard.send('backspace')
-                    if count > 1:
-                        time.sleep(0.002)  # 2ms delay để đảm bảo ổn định
-                print(f"✅ Đã xóa {count} ký tự bằng backspace tuần tự")
-            else:
-                # Với keywords dài hơn: thử selection trước, fallback về backspace
-                selection_success = False
-                try:
-                    # Thử phương pháp selection
-                    # Ctrl+Shift+Left để select word
-                    keyboard.send('ctrl+shift+left')
-                    time.sleep(0.005)  # 5ms để đảm bảo selection
-                    keyboard.send('delete')
-                    selection_success = True
-                    print(f"✅ Đã xóa {count} ký tự bằng selection")
-                except Exception as sel_error:
-                    print(f"⚠️ Selection method thất bại: {sel_error}")
-                    selection_success = False
-                
-                # Fallback: nếu selection không thành công
-                if not selection_success:
-                    print(f"🔄 Fallback: sử dụng backspace tuần tự cho {count} ký tự")
-                    for i in range(count):
-                        keyboard.send('backspace')
-                        time.sleep(0.002)  # 2ms delay
-                    print(f"✅ Đã xóa {count} ký tự bằng backspace fallback")
+            # Sử dụng phương pháp backspace tuần tự cho tất cả trường hợp để đảm bảo chính xác
+            # Đây là phương pháp đáng tin cậy nhất cho mọi loại shortcut
+            for i in range(count):
+                keyboard.send('backspace')
+                # Delay nhỏ giữa các backspace để đảm bảo ổn định
+                if i < count - 1:  # Không delay cho backspace cuối cùng
+                    time.sleep(0.003)  # 3ms delay để đảm bảo từng ký tự được xóa hoàn toàn
+            
+            print(f"✅ Đã xóa {count} ký tự bằng backspace tuần tự")
                         
         except Exception as e:
             print(f"❌ Lỗi trong _fast_backspace: {e}")
-            # Fallback cuối cùng: backspace đơn giản
-            print(f"🆘 Emergency fallback: xóa {count} ký tự")
+            # Emergency fallback: thử lại với delay lớn hơn
+            print(f"🆘 Emergency fallback: xóa {count} ký tự với delay lớn")
             try:
                 for i in range(count):
                     keyboard.send('backspace')
-                    time.sleep(0.005)  # Delay lớn hơn cho emergency
+                    time.sleep(0.010)  # Delay lớn hơn cho emergency
+                print(f"✅ Emergency fallback thành công")
             except Exception as final_error:
                 print(f"💥 Emergency fallback cũng thất bại: {final_error}")
     
     def _on_key_press(self, event):
-        """Xử lý sự kiện phím bấm với tốc độ tối ưu"""
+        """Xử lý sự kiện phím bấm với tốc độ tối ưu - Hỗ trợ mọi định dạng shortcut"""
         if not self.is_monitoring:
             return
         
@@ -257,18 +256,27 @@ class KeyboardMonitor:
                 self.last_triggered_keyword = ""
             self._cancel_pending_trigger()
             
-        elif event.name in ['space', 'enter', 'tab']:
-            # Reset trigger state khi có phím kết thúc từ
+        elif event.name in ['enter', 'tab']:
+            # Chỉ reset với enter và tab, không reset với space để hỗ trợ shortcut có dấu cách
             self.last_triggered_keyword = ""
             self._cancel_pending_trigger()
             
             # Thêm ký tự vào buffer
-            if event.name == 'space':
-                self.typed_buffer += ' '
-            elif event.name == 'tab':
+            if event.name == 'tab':
                 self.typed_buffer += '\t'
             elif event.name == 'enter':
                 self.typed_buffer = ""
+                
+        elif event.name == 'space':
+            # Thêm dấu cách vào buffer nhưng không reset trigger state
+            self.typed_buffer += ' '
+            
+            # Giới hạn độ dài buffer
+            if len(self.typed_buffer) > 50:  # Tăng từ 30 lên 50 để hỗ trợ shortcut dài hơn
+                self.typed_buffer = self.typed_buffer[-50:]
+            
+            # Kiểm tra shortcuts ngay sau khi thêm dấu cách
+            self._fast_check_for_shortcuts()
                 
         elif len(event.name) == 1:
             # Xử lý tất cả ký tự có thể gõ được (bao gồm cả ký tự đặc biệt)
@@ -277,8 +285,8 @@ class KeyboardMonitor:
                 self.typed_buffer += char
                 
                 # Giới hạn độ dài buffer
-                if len(self.typed_buffer) > 30:
-                    self.typed_buffer = self.typed_buffer[-30:]
+                if len(self.typed_buffer) > 50:  # Tăng từ 30 lên 50 để hỗ trợ shortcut dài hơn
+                    self.typed_buffer = self.typed_buffer[-50:]
                 
                 # Kiểm tra keywords với thuật toán tối ưu
                 self._fast_check_for_shortcuts()
@@ -290,43 +298,44 @@ class KeyboardMonitor:
             self._cancel_pending_trigger()
     
     def _fast_check_for_shortcuts(self):
-        """Kiểm tra shortcuts với thuật toán tối ưu tốc độ"""
+        """Kiểm tra shortcuts với thuật toán tối ưu tốc độ - Ưu tiên exact match và shortcut ngắn"""
         if not self.typed_buffer:
             return
         
         buffer_len = len(self.typed_buffer)
+        found_keywords = []
         
-        # Kiểm tra từ keywords dài nhất trước (tối ưu cache)
-        for keyword_len in sorted(self._keyword_cache.keys(), reverse=True):
+        # Thu thập tất cả keywords phù hợp
+        for keyword_len in self._keyword_cache.keys():
             if keyword_len > buffer_len:
                 continue  # Skip keywords dài hơn buffer
             
-            if keyword_len <= buffer_len:
-                # Kiểm tra các keywords có độ dài phù hợp
-                for keyword in self._keyword_cache[keyword_len]:
-                    if (self.typed_buffer.endswith(keyword) and 
-                        keyword != self.last_triggered_keyword and
-                        self._is_complete_word_fast(keyword)):
-                        
-                        self._schedule_auto_trigger(keyword)
-                        return  # Tìm thấy rồi thì dừng luôn
+            for keyword in self._keyword_cache[keyword_len]:
+                if (self.typed_buffer.endswith(keyword) and 
+                    keyword != self.last_triggered_keyword):
+                    found_keywords.append(keyword)
+        
+        if not found_keywords:
+            return
+        
+        # Ưu tiên shortcut theo thứ tự:
+        # 1. Exact match (keyword = buffer)
+        # 2. Shortcut ngắn nhất (tránh conflict)
+        exact_matches = [kw for kw in found_keywords if kw == self.typed_buffer]
+        if exact_matches:
+            # Nếu có exact match, ưu tiên shortcut ngắn nhất
+            selected_keyword = min(exact_matches, key=len)
+        else:
+            # Nếu không có exact match, chọn shortcut ngắn nhất
+            selected_keyword = min(found_keywords, key=len)
+        
+        self._schedule_auto_trigger(selected_keyword)
     
     def _is_complete_word_fast(self, keyword: str) -> bool:
-        """Kiểm tra từ hoàn chỉnh với thuật toán nhanh"""
-        buffer_len = len(self.typed_buffer)
-        keyword_len = len(keyword)
-        
-        if buffer_len == keyword_len:
-            return True  # Keyword chiếm toàn bộ buffer
-        
-        # Kiểm tra ký tự trước keyword
-        start_pos = buffer_len - keyword_len
-        if start_pos > 0:
-            char_before = self.typed_buffer[start_pos - 1]
-            # Dùng set lookup thay vì list để tăng tốc
-            return char_before in {' ', '\t', '\n', '\r'}
-        
-        return True  # Keyword ở đầu buffer
+        """Kiểm tra từ hoàn chỉnh - Luôn trả về True để hỗ trợ mọi định dạng shortcut"""
+        # Để hỗ trợ mọi loại shortcut (có dấu cách, ký tự đặc biệt), 
+        # chúng ta không cần kiểm tra từ hoàn chỉnh nữa
+        return True
     
     def set_instant_trigger(self, enabled: bool):
         """Bật/tắt chế độ trigger ngay lập tức"""

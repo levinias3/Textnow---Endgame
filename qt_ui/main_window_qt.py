@@ -341,13 +341,29 @@ class MainWindowQt(QMainWindow):
             print(f"❌ Stylesheet error: {e}")
     
     def _set_window_icon(self):
-        """Set window icon"""
+        """Set window icon với chất lượng cao"""
         try:
-            icon_path = Path(__file__).parent.parent / "icon.png"
-            if icon_path.exists():
-                self.setWindowIcon(QIcon(str(icon_path)))
+            # Sử dụng icon chất lượng cao nhất có sẵn
+            base_path = Path(__file__).parent.parent
+            
+            # Thử các icon theo thứ tự ưu tiên (chất lượng cao -> thấp)
+            icon_candidates = [
+                base_path / "icons" / "icon_256x256.png",  # Chất lượng cao nhất
+                base_path / "icons" / "icon_128x128.png",  # Chất lượng cao
+                base_path / "icons" / "icon_64x64.png",    # Chất lượng trung bình
+                base_path / "icon.png",                    # Fallback
+                base_path / "app.ico"                      # ICO fallback
+            ]
+            
+            for icon_path in icon_candidates:
+                if icon_path.exists():
+                    self.setWindowIcon(QIcon(str(icon_path)))
+                    print(f"✅ Window icon set: {icon_path.name}")
+                    return
+                    
+            print("⚠️ No window icon found")
         except Exception as e:
-            print(f"⚠️ Icon error: {e}")
+            print(f"⚠️ Window icon error: {e}")
     
     def _setup_system_tray(self):
         """Setup system tray icon and menu"""
@@ -361,15 +377,28 @@ class MainWindowQt(QMainWindow):
             # Create tray icon
             self.tray_icon = QSystemTrayIcon(self)
             
-            # Set icon
-            icon_path = Path(__file__).parent.parent / "icon.png"
-            if icon_path.exists():
-                self.tray_icon.setIcon(QIcon(str(icon_path)))
-                print(f"✅ Tray icon set: {icon_path}")
-            else:
+            # Set icon với chất lượng cao
+            base_path = Path(__file__).parent.parent
+            tray_icon_candidates = [
+                base_path / "icons" / "icon_32x32.png",    # Tối ưu cho system tray
+                base_path / "icons" / "icon_20x20.png",    # Kích thước chuẩn tray
+                base_path / "icons" / "icon_24x24.png",    # Alternative tray size
+                base_path / "icon.png",                    # Fallback
+                base_path / "app.ico"                      # ICO fallback
+            ]
+            
+            tray_icon_set = False
+            for icon_path in tray_icon_candidates:
+                if icon_path.exists():
+                    self.tray_icon.setIcon(QIcon(str(icon_path)))
+                    print(f"✅ Tray icon set: {icon_path.name}")
+                    tray_icon_set = True
+                    break
+            
+            if not tray_icon_set:
                 # Fallback to default icon
                 self.tray_icon.setIcon(self.style().standardIcon(self.style().StandardPixmap.SP_ComputerIcon))
-                print("✅ Tray icon set: default")
+                print("✅ Tray icon set: default fallback")
             
             # Create context menu
             tray_menu = QMenu()

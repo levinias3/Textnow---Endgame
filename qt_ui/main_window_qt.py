@@ -440,17 +440,27 @@ class MainWindowQt(QMainWindow):
             
             # Configure table
             header = table_view.horizontalHeader()
-            header.setStretchLastSection(True)
-            header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)  # Shortcut column
-            header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)  # Type column
-            header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)  # Content column (stretch)
-            header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)  # Status column
+            header.setStretchLastSection(False)
+            
+            # Set specific column widths like in the image
+            header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)  # Shortcut column - fixed width
+            header.setSectionResizeMode(1, QHeaderView.ResizeMode.Fixed)  # Type column - fixed width  
+            header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)  # Content column - stretches
+            header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)  # Status column - fixed width
+            
+            # Set column widths to match the image proportions
+            table_view.setColumnWidth(0, 120)  # Shortcut column - wider for keywords
+            table_view.setColumnWidth(1, 140)  # Type column - wider for "Văn bản + Ảnh"
+            table_view.setColumnWidth(3, 100)  # Status column - enough for "Bật/Tắt"
             
             # Hide vertical header
             table_view.verticalHeader().setVisible(False)
             
             # Row selection
             table_view.setSelectionBehavior(table_view.SelectionBehavior.SelectRows)
+            
+            # Set row height for better appearance
+            table_view.verticalHeader().setDefaultSectionSize(40)
             
             print("✅ Table setup completed")
         except Exception as e:

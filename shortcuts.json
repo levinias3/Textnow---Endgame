@@ -9,7 +9,7 @@
         {
             "keyword": "qr@",
             "type": "image",
-            "content": "C:/Users/Admin/Downloads/qr.jpg",
+            "content": "",
             "enabled": true
         },
         {
@@ -120,7 +120,199 @@
         {
             "keyword": "cccd@",
             "type": "text",
-            "content": "dsadada",
+            "content": "Drop CCCD Gồm:\n- Ảnh cccd mặt trước \n- Ảnh chân dung cầm cccd\n- Ảnh cccd chụp bên cạnh fb cá nhân",
+            "enabled": true
+        },
+        {
+            "keyword": "mgb@",
+            "type": "text",
+            "content": "<noreply@mail.accounts.riotgames.com>\n<noreply@umail.accounts.riotgames.com>\n<support@vnggames.zendesk.com>",
+            "enabled": true
+        },
+        {
+            "keyword": "gmbc@",
+            "type": "text",
+            "content": "Em gửi bác gmail gốc nhé ạ: \n- Thư Welcome em để ở phần có gắn sao bác nhé \n- Em có thay sdt về của bác rồi nhé ạ \n- Nếu bác muốn thay mật khẩu em khuyên bác nên đợi 7 ngày để code sdt về số bác với cũng để tránh bị khóa mail nhé ạ vì thay thông tin luôn trên máy lạ sẽ dễ bị khóa mail bác ạ",
+            "enabled": true
+        },
+        {
+            "keyword": "lmbc@",
+            "type": "text",
+            "content": "Bác muốn lấy gmail gốc luôn ko ạ , hay sẽ để bên em giữ luôn.\n------------------------------------\nEm gửi một số lợi ích nếu để gmail gốc bên em giữ bác xem qua thử ạ \n- Mọi vấn đề về bảo mật em vẫn sẽ bảo hành đến khi drop gmail \n- Sau nếu bác có bán lại cho bên em giá thu sẽ là 70% thay vì 65% nếu lấy gmail gốc luôn\n- Sau bác bán lại sẽ không cần hold tiền 7 ngày hoặc thông tin cá nhân nào khác \n- Bác vẫn có thể lấy gmail gốc lúc nào bác muốn ạ",
+            "enabled": true
+        },
+        {
+            "keyword": "lmbn@",
+            "type": "text",
+            "content": "Bạn muốn lấy gmail gốc luôn ko nhỉ , hay sẽ để bên mình giữ luôn.\n------------------------------------\nMình gửi một số lợi ích nếu để gmail gốc bên mình giữ bạn xem qua thử nhé\n- Mọi vấn đề về bảo mật mình vẫn sẽ bảo hành đến khi drop gmail\n- Sau nếu bạn có bán lại cho mình giá thu sẽ là 70% thay vì 65% nếu lấy gmail gốc luôn\n- Sau bạn bán lại sẽ không cần hold tiền 7 ngày hoặc thông tin cá nhân nào khác \n- Bạn vẫn có thể lấy gmail gốc lúc nào bạn muốn",
+            "enabled": true
+        },
+        {
+            "keyword": "dpbc@",
+            "type": "text",
+            "content": "Em gửi bác link để bác đổi pass nếu cần nhé , Link chỉ có hiệu lực trong 24h nên nếu có hết hạn bác bảo em cập nhật lại nhé ạ\n---------------------------------\nLink:",
+            "enabled": true
+        },
+        {
+            "keyword": "dpbn@",
+            "type": "text",
+            "content": "Mình gửi bạn link để bạn đổi pass nếu cần nhé , Link chỉ có hiệu lực trong 24h nên nếu có hết hạn bạn bảo mình cập nhật lại nhé \n---------------------------------\nLink:",
+            "enabled": true
+        },
+        {
+            "keyword": "mb@",
+            "type": "text",
+            "content": "Bạn sẽ gửi mình \n- acc + gmail gốc nhé \n- Bạn vào acc riot đổi mail liên kết về gmail gốc sẵn giúp mình \n- Bạn vào gmail gốc vào xác minh 2 bước mở giúp mình cái mã dự phòng nhé xong chụp gửi mình là dc í",
+            "enabled": true
+        },
+        {
+            "keyword": "hd3@",
+            "type": "text",
+            "content": "Từ Khóa check thư welcome \n<noreply@umail.accounts.riotgames.com> + Username",
+            "enabled": true
+        },
+        {
+            "keyword": "sdt2@",
+            "type": "text",
+            "content": "Tài khoản của mình không bị mất",
+            "enabled": true
+        },
+        {
+            "keyword": "sdt1@",
+            "type": "text",
+            "content": "Không có ai khác ngoài mình",
+            "enabled": true
+        },
+        {
+            "keyword": "ndsdt@",
+            "type": "text",
+            "content": "Mình muốn được hỗ trợ hủy liên kết số điện thoại premier do số điện thoại đó của mình đã bị mất. Mình đã có thử vào đường link hủy số điện thoại của riot cung cấp nhưng đường link đó bị lỗi và không thể truy cập . Mình mong được hỗ trợ",
+            "enabled": true
+        },
+        {
+            "keyword": "tdsdt@",
+            "type": "text",
+            "content": "Mình muốn được hỗ trợ gỡ số điện thoại liên kết",
+            "enabled": true
+        },
+        {
+            "keyword": "gabc@",
+            "type": "text",
+            "content": "em gửi bác acc nhé , bác check xem acc ổn hết chưa nhé ạ",
+            "enabled": true
+        },
+        {
+            "keyword": "gabn@",
+            "type": "text",
+            "content": "Mình gửi bạn acc nhé , bạn check xem acc ổn hết chưa nhé",
+            "enabled": true
+        },
+        {
+            "keyword": "tabc@",
+            "type": "text",
+            "content": "em có bác nhé , bác gửi ảnh acc em xem với nha",
+            "enabled": true
+        },
+        {
+            "keyword": "tabn@",
+            "type": "text",
+            "content": "mình có bạn nhé , bạn gửi ảnh acc mình xem với nha",
+            "enabled": true
+        },
+        {
+            "keyword": "hd1@",
+            "type": "text",
+            "content": "bạn xem qua bài này để hiểu cách thay tt acc + gmail gốc nhé , nếu có gì chưa rõ cứ hỏi mình nha\n----------------------------------\nhttps://vuducmanh.store/Hướng-Dẫn",
+            "enabled": true
+        },
+        {
+            "keyword": "ch@",
+            "type": "text",
+            "content": "Bạn vào gmail trên điện thoại:\n- Quay video\n- Nhập địa chỉ mail: \n- sau khi nhập địa chỉ mail xong bạn ấn tiếp tục , đến bước nhập mật khẩu bạn ấn quên mật khẩu , ở quên mật khẩu sẽ có 1 phần là \" thử cách xác minh khác \" bác ấn và phần đó khi nào không google báo không còn phương pháp khôi phục nào",
+            "enabled": true
+        },
+        {
+            "keyword": "hold@",
+            "type": "text",
+            "content": "https://www.facebook.com/groups/valorantvietnam.congdong/permalink/1240288877815513/",
+            "enabled": true
+        },
+        {
+            "keyword": "hd2@",
+            "type": "text",
+            "content": "Cách để hạn chế bị vô hiệu hóa gmail ( Khóa gmail ) : \n- Sau khi thay thông tin xong người mua sẽ tạo 1 hồ sơ chrome mới hoặc dùng ẩn danh để đặt lại pass mới cho gmail gốc , chứ sẽ không thay trực tiếp trong phần bảo mật \n- Nếu dùng điện thoại ae sẽ phải đăng xuất mail ra thì mới làm cách này được \nLƯU Ý: Ae nhớ làm theo để hạn chế bị vô hiệu hóa gmail , vì khi bị vô hiệu hóa mail sẽ cần hold tiền 2 tuần và có thể thông tin khôi phục sẽ bị nhảy về số những chủ đời đầu của gmail và rất nguy hiểm đến bảo mật",
+            "enabled": true
+        },
+        {
+            "keyword": "gmbn@",
+            "type": "text",
+            "content": "Mình gửi bạn gmail gốc nhé : \n- Thư Welcome mình để ở phần có gắn sao nhé bạn \n- Mình có thay sdt về của bạn rồi nhé \n- Nếu bạn muốn thay mật khẩu mình khuyên bạn nên đợi 7 ngày để code sdt về số bạn với cũng để tránh bị khóa mail nhé vì thay thông tin luôn trên máy lạ sẽ dễ bị khóa mail bạn ạ",
+            "enabled": true
+        },
+        {
+            "keyword": "nguon@",
+            "type": "text",
+            "content": "<noreply@umail.accounts.riotgames.com>",
+            "enabled": true
+        },
+        {
+            "keyword": "vdm@",
+            "type": "text",
+            "content": "manhducvu0508@gmail.com",
+            "enabled": true
+        },
+        {
+            "keyword": "fml@",
+            "type": "text",
+            "content": "Manh58044",
+            "enabled": true
+        },
+        {
+            "keyword": "cmbn@",
+            "type": "text",
+            "content": "cảm ơn bạn nhiều nhé chúc bạn chơi game vui vẻ",
+            "enabled": true
+        },
+        {
+            "keyword": "cmbc@",
+            "type": "text",
+            "content": "cảm ơn bác nhiều ạ chúc bác chơi game vui vẻ",
+            "enabled": true
+        },
+        {
+            "keyword": "vs1@",
+            "type": "text",
+            "content": "4293 8902 3193 2742",
+            "enabled": true
+        },
+        {
+            "keyword": "vs2@",
+            "type": "text",
+            "content": "890",
+            "enabled": true
+        },
+        {
+            "keyword": "ly@",
+            "type": "text",
+            "content": "Mà bạn lưu ý là bán acc sẽ cần hold tiền 7 ngày bạn nhé hoặc bạn có thể gửi cccd xong mình sẽ hỗ trợ ứng trước 50% nhé",
+            "enabled": true
+        },
+        {
+            "keyword": "fb@",
+            "type": "text",
+            "content": "à fb mình bị quét nên đang chờ xác minh để mở khóa bạn ạ , mà 1 2 ngày nữa là mở được í",
+            "enabled": true
+        },
+        {
+            "keyword": "sdt13@",
+            "type": "text",
+            "content": "1) Username (tên đăng nhập): \n2) Hãy cho biết Riot ID đầy đủ của bạn, bao gồm cả thẻ tên (ví dụ: RiotGames # NA1):\n3) Tên ingame: \n4) Bạn chơi trên máy chủ nào (Bắc Mỹ, Châu Âu...):  VNM\n5) Địa chỉ email khởi tạo tài khoản: \n6) Địa chỉ IPv4 hiện tại của bạn (Hãy sử dụng trang https://www.whatismyip.com/ để tìm địa chỉ IP của bạn):\n7) Ai là người khởi tạo tài khoản này: Mình\n8) Tất cả các email có thể đã được sử dụng cho tài khoản này (hãy đoán thử vài lần!):\n9) Bạn có quyền truy cập các email này không: Mình có thể\n10) Ngày khởi tạo tài khoản (ví dụ: 20/08/2019):\n11) Địa điểm khởi tạo tài khoản? (thành phố, quốc gia): Việt Nam\n12) Đã từng có ai khác chơi bằng tài khoản này chưa? (kể cả bạn bè/gia đình): Không có ai khác ngoài mình\n13) Hãy nêu tên bất kỳ sản phẩm nào khác của Riot mà bạn đã chơi bằng tài khoản này: Valorant",
+            "enabled": true
+        },
+        {
+            "keyword": "new@",
+            "type": "text",
+            "content": "à riot nó lại vừa tắt mất cái tính năng đó nên giờ có thể vào bth rồi bạn nhé, khi nào mình test dc mình sẽ có hướng dẫn cụ thể cho bạn nhé",
             "enabled": true
         }
     ]
